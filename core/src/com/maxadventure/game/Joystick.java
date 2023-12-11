@@ -11,7 +11,7 @@ public class Joystick {
     private OrthographicCamera camera;
     private Texture bgCircle, fgTexture;
     private float bgCircleSize, fgTextureSize, currentLength;
-    private boolean isStatic = true;
+    private boolean isStatic = false;
     private Vector2 centerPosition = new Vector2(), activeCenterPosition = new Vector2();
     private Vector2 leftBottomPointOfCamera = new Vector2(), result = new Vector2();
 

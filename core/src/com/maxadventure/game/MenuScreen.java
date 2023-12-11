@@ -45,6 +45,7 @@ public class MenuScreen implements Screen {
         batch.begin();
         renderBackground1(delta);
         batch.setProjectionMatrix(camera.combined);
+        if (Gdx.input.justTouched()) myGdxGame.setScreen(myGdxGame.testMapScreen);
         batch.end();
     }
 

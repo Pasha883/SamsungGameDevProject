@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class TestMapScreen implements Screen {
     private MyGdxGame myGdxGame;
@@ -28,9 +29,8 @@ public class TestMapScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private Box2DDebugRenderer box2DDebugRenderer;
     private World world;
-    private float unitscale = 5;
+    private float unitscale = 7;
     Player player;
-
     private Joystick joystick;
 
 
@@ -38,22 +38,24 @@ public class TestMapScreen implements Screen {
         this.myGdxGame = myGdxGame;
         this.batch = batch;
         this.camera = camera;
+        joystick = new Joystick(batch,camera, new Texture("bgJoystick.png"),
+                new Texture("fgStick.png"), 400, 100);
         tmxMapLoader = new TmxMapLoader();
         box2DDebugRenderer = new Box2DDebugRenderer();
-        tiledMap = tmxMapLoader.load("test.tmx");
+        tiledMap = tmxMapLoader.load("jo.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitscale);
 
-        world = new World(new Vector2(0, -9.8f), true);
+        world = new World(new Vector2(0, -98f), true);
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
 
-        for (MapObject object : tiledMap.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (MapObject object : tiledMap.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rect.x + rect.getWidth() / 2) * unitscale, (rect.y + rect.getHeight()/2) * unitscale);
+            bodyDef.position.set((rect.x + rect.getWidth() / 2) * unitscale, (rect.y + rect.getHeight() / 2) * unitscale);
 
             body = world.createBody(bodyDef);
             shape.setAsBox(rect.getWidth() / 2 * unitscale, rect.getHeight() / 2 * unitscale);
@@ -62,15 +64,6 @@ public class TestMapScreen implements Screen {
 
         }
         player = new Player(world);
-
-        joystick = new Joystick(
-                batch,
-                camera,
-                new Texture("bgJoystick.png"),
-                new Texture("fgStick.png"),
-                400,
-                100
-        );
     }
 
     @Override
@@ -80,23 +73,25 @@ public class TestMapScreen implements Screen {
 
     @Override
     public void render(float delta) {
-//        world.step(1/60f, 6, 2);
-//        if (Gdx.input.isTouched() && Gdx.input.getX() > MyGdxGame.WIDTH / 2) {
-//            camera.position.x += 5f;
-//        }
-//        if (Gdx.input.isTouched() && Gdx.input.getX() < MyGdxGame.WIDTH / 2) {
-//            camera.position.x += -5f;
-//        }
+        ScreenUtils.clear(0,0,0,0);
         camera.position.x += joystick.getResult().x * 10;
+        camera.position.y += joystick.getResult().y * 10;
+
+        if(joystick.getResult().y >= 0.75f){
+            player.body.applyForceToCenter(new Vector2(0, 30000), true);
+        }
         camera.update();
+
+
+        batch.begin();
+        joystick.render(delta);
+        batch.setProjectionMatrix(camera.combined);
+        batch.end();
         renderer.setView(camera);
         renderer.render();
         box2DDebugRenderer.render(world, camera.combined);
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        joystick.render(delta);
-        batch.end();
 
+        world.step(1/60f, 6, 2);
     }
 
     @Override
