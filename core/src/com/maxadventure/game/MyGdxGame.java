@@ -14,6 +14,7 @@ public class MyGdxGame extends Game {
 	public IntroScreen introScreen;
 
 	Texture img;
+
 	
 	@Override
 	public void create () {
