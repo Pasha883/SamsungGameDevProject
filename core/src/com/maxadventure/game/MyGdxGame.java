@@ -33,7 +33,7 @@ public class MyGdxGame extends Game {
 		testMapScreen = new TestMapScreen(this,batch,camera);
 		testMapScreen = new TestMapScreen(this,batch,camera);
 		menuScreen = new MenuScreen(this, batch, camera);
-		setScreen(menuScreen);
+		setScreen(introScreen);
 	}
 
 	

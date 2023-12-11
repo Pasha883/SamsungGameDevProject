@@ -18,6 +18,8 @@ public class MenuScreen implements Screen {
     private OrthographicCamera camera;
 
     private HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
+
+    private Texture B8L1, B8L2, B8L3, BL4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
 
     public MenuScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
@@ -26,7 +28,7 @@ public class MenuScreen implements Screen {
         this.myGdxGame = myGdxGame;
 
         initializateBackground8();
-       }
+    }
 
     @Override
     public void show() {
