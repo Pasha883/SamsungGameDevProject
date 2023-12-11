@@ -68,8 +68,8 @@ public class TestMapScreen implements Screen {
                 camera,
                 new Texture("bgJoystick.png"),
                 new Texture("fgStick.png"),
-                200,
-                50
+                400,
+                100
         );
     }
 
