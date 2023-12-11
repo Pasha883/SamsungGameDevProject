@@ -13,6 +13,7 @@ import com.badlogic.gdx.video.VideoPlayerCreator;
 import java.io.FileNotFoundException;
 
 public class IntroScreen implements Screen {
+    //I am natural
     private  MyGdxGame myGdxGame;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
