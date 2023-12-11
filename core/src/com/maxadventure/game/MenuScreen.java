@@ -24,11 +24,19 @@ public class MenuScreen implements Screen {
     private HashMap<String, BackgroundCircle> parallaxBg1 = new HashMap<>();
     private HashMap<String, BackgroundCircle> parallaxBg2 = new HashMap<>();
     private HashMap<String, BackgroundCircle> parallaxBg3 = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg4 = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg5 = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg6 = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg7 = new HashMap<>();
     private HashMap<String, BackgroundCircle> parallaxBg8 = new HashMap<>();
 
     private Texture B8L1, B8L2, B8L3, B8L4;
     private Texture B7L1, B7L2, B7L3, B7L4;
     private Texture B6L1, B6L2, B6L3, B6L4;
+    private Texture B5L1, B5L2, B5L3, B5L4;
+    private Texture B4L1, B4L2, B4L3, B4L4, B4L5;
+    private Texture B3L1, B3L2, B3L3, B3L4, B3L5, B3L6;
+    private Texture B2L1, B2L2, B2L3, B2L4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
 
     public MenuScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
@@ -39,6 +47,10 @@ public class MenuScreen implements Screen {
         initializateBackground1();
         initializateBackground2();
         initializateBackground3();
+        initializateBackground4();
+        initializateBackground5();
+        initializateBackground6();
+        initializateBackground7();
         initializateBackground8();
     }
 
@@ -58,11 +70,12 @@ public class MenuScreen implements Screen {
         ScreenUtils.clear(1, 1, 1, 1);
         camera.update();
         batch.begin();
-        if (now > 19) {
-            renderBackground8(delta);
-        } else if (now < 18) {
-            renderBackground2(delta);
-        }
+        //if (now > 19) {
+          //  renderBackground8(delta);
+        //} else if (now < 18) {
+         //   renderBackground2(delta);
+       // }
+        renderBackground7(delta);
         batch.setProjectionMatrix(camera.combined);
         //if (Gdx.input.justTouched()) myGdxGame.setScreen(myGdxGame.testMapScreen);
         batch.end();
@@ -121,16 +134,74 @@ public class MenuScreen implements Screen {
     }
 
     public void initializateBackground3(){
-        B6L4 = new Texture("MenuBackground2/1.png");
-        B6L3 = new Texture("MenuBackground2/2.png");
-        B6L2 = new Texture("MenuBackground2/3.png");
-        B6L1 = new Texture("MenuBackground2/4.png");
+        B6L4 = new Texture("MenuBackground3/1.png");
+        B6L3 = new Texture("MenuBackground3/2.png");
+        B6L2 = new Texture("MenuBackground3/3.png");
+        B6L1 = new Texture("MenuBackground3/4.png");
 
 
         parallaxBg3.put("B6L1", new BackgroundCircle(B6L1, batch, camera, 0.1f));
         parallaxBg3.put("B6L2", new BackgroundCircle(B6L2, batch, camera, 0.4f));
         parallaxBg3.put("B6L3", new BackgroundCircle(B6L3, batch, camera, -0.13f));
         parallaxBg3.put("B6L4", new BackgroundCircle(B6L4, batch, camera, 0.07f));
+    }
+
+    public void initializateBackground4(){
+        B5L4 = new Texture("MenuBackground4/1.png");
+        B5L3 = new Texture("MenuBackground4/2.png");
+        B5L2 = new Texture("MenuBackground4/3.png");
+        B5L1 = new Texture("MenuBackground4/4.png");
+
+
+        parallaxBg4.put("B5L1", new BackgroundCircle(B5L1, batch, camera, 0.1f));
+        parallaxBg4.put("B5L2", new BackgroundCircle(B5L2, batch, camera, 0.4f));
+        parallaxBg4.put("B5L3", new BackgroundCircle(B5L3, batch, camera, -0.13f));
+        parallaxBg4.put("B5L4", new BackgroundCircle(B5L4, batch, camera, 0.07f));
+    }
+
+    public void initializateBackground5(){
+        B4L5 = new Texture("MenuBackground5/1.png");
+        B4L4 = new Texture("MenuBackground5/2.png");
+        B4L3 = new Texture("MenuBackground5/3.png");
+        B4L2 = new Texture("MenuBackground5/4.png");
+        B4L1 = new Texture("MenuBackground5/5.png");
+
+
+        parallaxBg5.put("B4L1", new BackgroundCircle(B4L1, batch, camera, 0.1f));
+        parallaxBg5.put("B4L2", new BackgroundCircle(B4L2, batch, camera, 0.4f));
+        parallaxBg5.put("B4L3", new BackgroundCircle(B4L3, batch, camera, -0.13f));
+        parallaxBg5.put("B4L4", new BackgroundCircle(B4L4, batch, camera, 0.07f));
+        parallaxBg5.put("B4L5", new BackgroundCircle(B4L5, batch, camera, 0.07f));
+    }
+
+    public void initializateBackground6(){
+        B3L6 = new Texture("MenuBackground6/1.png");
+        B3L5 = new Texture("MenuBackground6/2.png");
+        B3L4 = new Texture("MenuBackground6/3.png");
+        B3L3 = new Texture("MenuBackground6/4.png");
+        B3L2 = new Texture("MenuBackground6/5.png");
+        B3L1 = new Texture("MenuBackground6/6.png");
+
+
+        parallaxBg6.put("B3L1", new BackgroundCircle(B3L1, batch, camera, 0.1f));
+        parallaxBg6.put("B3L2", new BackgroundCircle(B3L2, batch, camera, 0.4f));
+        parallaxBg6.put("B3L3", new BackgroundCircle(B3L3, batch, camera, -0.13f));
+        parallaxBg6.put("B3L4", new BackgroundCircle(B3L4, batch, camera, 0.07f));
+        parallaxBg6.put("B3L5", new BackgroundCircle(B3L5, batch, camera, 0.07f));
+        parallaxBg6.put("B3L6", new BackgroundCircle(B3L6, batch, camera, 0.07f));
+    }
+
+    public void initializateBackground7(){
+        B2L4 = new Texture("MenuBackground7/1.png");
+        B2L3 = new Texture("MenuBackground7/2.png");
+        B2L2 = new Texture("MenuBackground7/3.png");
+        B2L1 = new Texture("MenuBackground7/4.png");
+
+
+        parallaxBg7.put("B2L1", new BackgroundCircle(B2L1, batch, camera, 0.1f));
+        parallaxBg7.put("B2L2", new BackgroundCircle(B2L2, batch, camera, 0.4f));
+        parallaxBg7.put("B2L3", new BackgroundCircle(B2L3, batch, camera, -0.13f));
+        parallaxBg7.put("B2L4", new BackgroundCircle(B2L4, batch, camera, 0.07f));
     }
 
     public void initializateBackground8(){
@@ -162,6 +233,30 @@ public class MenuScreen implements Screen {
 
     public void renderBackground3(float delta){
         for (BackgroundCircle bgCircle : parallaxBg3.values()){
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground4(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg4.values()){
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground5(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg5.values()){
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground6(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg6.values()){
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground7(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg7.values()){
             bgCircle.render(delta);
         }
     }
