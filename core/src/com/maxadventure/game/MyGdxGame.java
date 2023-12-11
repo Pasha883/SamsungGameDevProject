@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.HashMap;
+
 public class MyGdxGame extends Game {
 	SpriteBatch batch;
 	public static int HEIGHT, WIDTH;
@@ -15,6 +17,7 @@ public class MyGdxGame extends Game {
 
 	public IntroScreen introScreen;
 	public TestMapScreen testMapScreen;
+	public MenuScreen menuScreen;
 
 	Texture img;
 
@@ -28,7 +31,9 @@ public class MyGdxGame extends Game {
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		introScreen = new IntroScreen(this, batch, camera);
 		testMapScreen = new TestMapScreen(this,batch,camera);
-		setScreen(introScreen);
+		testMapScreen = new TestMapScreen(this,batch,camera);
+		menuScreen = new MenuScreen(this, batch, camera);
+		setScreen(menuScreen);
 	}
 
 	
