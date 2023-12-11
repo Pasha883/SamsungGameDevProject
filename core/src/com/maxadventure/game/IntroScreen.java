@@ -29,7 +29,7 @@ public class IntroScreen implements Screen {
         videoPlayer.setOnCompletionListener(new VideoPlayer.CompletionListener() {
             @Override
             public void onCompletionListener(FileHandle file) {
-                myGdxGame.setScreen(myGdxGame.introScreen);
+                myGdxGame.setScreen(myGdxGame.testMapScreen);
             }
         });
 

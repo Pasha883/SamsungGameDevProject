@@ -2,6 +2,7 @@ package com.maxadventure.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,18 +10,24 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MyGdxGame extends Game {
 	SpriteBatch batch;
+	public static int HEIGHT, WIDTH;
 	public OrthographicCamera camera;
 
 	public IntroScreen introScreen;
+	public TestMapScreen testMapScreen;
 
 	Texture img;
 
 	
 	@Override
 	public void create () {
+		WIDTH = Gdx.graphics.getWidth();
+		HEIGHT = Gdx.graphics.getHeight();
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		camera = new OrthographicCamera();
+		camera.setToOrtho(false, WIDTH, HEIGHT);
 		introScreen = new IntroScreen(this, batch, camera);
+		testMapScreen = new TestMapScreen(this,batch,camera);
 		setScreen(introScreen);
 	}
 
