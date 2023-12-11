@@ -17,9 +17,11 @@ public class MenuScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
-    private HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg1 = new HashMap<>();
+    private HashMap<String, BackgroundCircle> parallaxBg8 = new HashMap<>();
 
-    private Texture B8L1, B8L2, B8L3, BL4;
+    private Texture B8L1, B8L2, B8L3, B8L4;
+    private Texture B7L1, B7L2, B7L3, B7L4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
 
     public MenuScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
@@ -27,7 +29,7 @@ public class MenuScreen implements Screen {
         this.camera = camera;
         this.myGdxGame = myGdxGame;
 
-        initializateBackground8();
+        initializateBackground1();
     }
 
     @Override
@@ -41,7 +43,7 @@ public class MenuScreen implements Screen {
         ScreenUtils.clear(1, 1, 1, 1);
         camera.update();
         batch.begin();
-        renderBackground(delta);
+        renderBackground1(delta);
         batch.setProjectionMatrix(camera.combined);
         batch.end();
     }
@@ -71,6 +73,19 @@ public class MenuScreen implements Screen {
 
     }
 
+    public void initializateBackground1(){
+        B8L4 = new Texture("MenuBackground1/1.png");
+        B8L3 = new Texture("MenuBackground1/2.png");
+        B8L2 = new Texture("MenuBackground1/3.png");
+        B8L1 = new Texture("MenuBackground1/4.png");
+
+
+        parallaxBg1.put("B8L1", new BackgroundCircle(B8L1, batch, camera, 0.1f));
+        parallaxBg1.put("B8L2", new BackgroundCircle(B8L2, batch, camera, 0.4f));
+        parallaxBg1.put("B8L3", new BackgroundCircle(B8L3, batch, camera, -0.13f));
+        parallaxBg1.put("B8L4", new BackgroundCircle(B8L4, batch, camera, 0.07f));
+    }
+
     public void initializateBackground8(){
         B1L6 = new Texture("MenuBackground8/1.png");
         B1l5 = new Texture("MenuBackground8/2.png");
@@ -79,16 +94,22 @@ public class MenuScreen implements Screen {
         B1L2 = new Texture("MenuBackground8/5.png");
         B1L1 = new Texture("MenuBackground8/6.png");
 
-        parallaxBg.put("B1L1", new BackgroundCircle(B1L1, batch, camera, 0.1f));
-        parallaxBg.put("B1L2", new BackgroundCircle(B1L2, batch, camera, 0.4f));
-        parallaxBg.put("B1L3", new BackgroundCircle(B1L3, batch, camera, -0.13f));
-        parallaxBg.put("B1L4", new BackgroundCircle(B1L4, batch, camera, 0.07f));
-        parallaxBg.put("B1L5", new BackgroundCircle(B1l5, batch, camera, 0.1f));
-        parallaxBg.put("B1L6", new BackgroundCircle(B1L6, batch, camera, 0.1f));
+        parallaxBg8.put("B1L1", new BackgroundCircle(B1L1, batch, camera, 0.1f));
+        parallaxBg8.put("B1L2", new BackgroundCircle(B1L2, batch, camera, 0.4f));
+        parallaxBg8.put("B1L3", new BackgroundCircle(B1L3, batch, camera, -0.13f));
+        parallaxBg8.put("B1L4", new BackgroundCircle(B1L4, batch, camera, 0.07f));
+        parallaxBg8.put("B1L5", new BackgroundCircle(B1l5, batch, camera, 0.1f));
+        parallaxBg8.put("B1L6", new BackgroundCircle(B1L6, batch, camera, 0.1f));
     }
 
-    public void renderBackground(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg.values()){
+    public void renderBackground1(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg1.values()){
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground8(float delta){
+        for (BackgroundCircle bgCircle : parallaxBg8.values()){
             bgCircle.render(delta);
         }
     }
