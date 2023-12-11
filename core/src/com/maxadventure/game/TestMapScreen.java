@@ -3,6 +3,7 @@ package com.maxadventure.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -29,6 +30,8 @@ public class TestMapScreen implements Screen {
     private World world;
     private float unitscale = 5;
     Player player;
+
+    private Joystick joystick;
 
 
     public TestMapScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
@@ -59,6 +62,15 @@ public class TestMapScreen implements Screen {
 
         }
         player = new Player(world);
+
+        joystick = new Joystick(
+                batch,
+                camera,
+                new Texture("bgJoystick.png"),
+                new Texture("fgStick.png"),
+                200,
+                50
+        );
     }
 
     @Override
@@ -68,19 +80,21 @@ public class TestMapScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        world.step(1/60f, 6, 2);
-        if (Gdx.input.isTouched() && Gdx.input.getX() > MyGdxGame.WIDTH / 2) {
-            camera.position.x += 5f;
-        }
-        if (Gdx.input.isTouched() && Gdx.input.getX() < MyGdxGame.WIDTH / 2) {
-            camera.position.x += -5f;
-        }
+//        world.step(1/60f, 6, 2);
+//        if (Gdx.input.isTouched() && Gdx.input.getX() > MyGdxGame.WIDTH / 2) {
+//            camera.position.x += 5f;
+//        }
+//        if (Gdx.input.isTouched() && Gdx.input.getX() < MyGdxGame.WIDTH / 2) {
+//            camera.position.x += -5f;
+//        }
+        camera.position.x += joystick.getResult().x * 10;
         camera.update();
         renderer.setView(camera);
         renderer.render();
         box2DDebugRenderer.render(world, camera.combined);
         batch.begin();
         batch.setProjectionMatrix(camera.combined);
+        joystick.render(delta);
         batch.end();
 
     }
