@@ -74,20 +74,7 @@ public class TestMapScreen implements Screen {
         Date date1= new Date();
 
         player = new Player(world);
-        if (date1.getHours()>18){
-            first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
-            second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
-            third = new Texture("bg/SET1/png/SET1_bakcground_night3.png");
-        } else {
-            first = new Texture("bg/SET1/png/SET1_bakcground_day1.png");
-            second = new Texture("bg/SET1/png/SET1_bakcground_day2.png");
-            third = new Texture("bg/SET1/png/SET1_bakcground_day3.png");
-        }
-
-
-        parallaxBg.put("firstBg", new BackgroundCircle(first, batch, camera, -0.2f));
-        parallaxBg.put("secondBg", new BackgroundCircle(second, batch, camera, -0.15f));
-        parallaxBg.put("thirdBg", new BackgroundCircle(third, batch, camera, -0.3f));
+        initializateBackground1(date1);
     }
 
     @Override
@@ -145,5 +132,22 @@ public class TestMapScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    public void initializateBackground1(Date date1){
+        player = new Player(world);
+        if (date1.getHours()>18){
+            first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_night3.png");
+        } else {
+            first = new Texture("bg/SET1/png/SET1_bakcground_day1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_day2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_day3.png");
+        }
+
+        parallaxBg.put("firstBg", new BackgroundCircle(first, batch, camera, -0.2f));
+        parallaxBg.put("secondBg", new BackgroundCircle(second, batch, camera, -0.15f));
+        parallaxBg.put("thirdBg", new BackgroundCircle(third, batch, camera, -0.3f));
     }
 }
