@@ -70,11 +70,23 @@ public class MenuScreen implements Screen {
         ScreenUtils.clear(1, 1, 1, 1);
         camera.update();
         batch.begin();
-        //if (now > 19) {
-          //  renderBackground8(delta);
-        //} else if (now < 18) {
-         //   renderBackground2(delta);
-       // }
+         if (now > 0 && now < 7) {
+            renderBackground3(delta);
+        } else if (now > 6 && now < 9) {
+            renderBackground2(delta);
+        } else if (now > 8 && now < 14) {
+            renderBackground1(delta);
+        } else if (now > 13 && now < 18) {
+            renderBackground5(delta);
+        } else if (now > 17 && now < 20) {
+            renderBackground6(delta);
+        } else if (now > 19 && now < 21) {
+            renderBackground7(delta);
+        } else if (now > 20 && now < 22) {
+            renderBackground4(delta);
+        } else if (now > 21 && now < 24) {
+            renderBackground8(delta);
+        }
         renderBackground7(delta);
         batch.setProjectionMatrix(camera.combined);
         //if (Gdx.input.justTouched()) myGdxGame.setScreen(myGdxGame.testMapScreen);
