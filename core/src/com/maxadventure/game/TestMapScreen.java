@@ -1,6 +1,5 @@
 package com.maxadventure.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,8 +17,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.ScreenUtils;
-
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,28 +32,31 @@ public class TestMapScreen implements Screen {
     private World world;
     private float unitscale = 7;
     Player player;
-    private Joystick joystick;
-    private Texture first,second,third;
+    public static Joystick joystick;
+    private Texture first, second, third;
     private HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
-
+    Button button;
+    private float gravityKoef = 1f, forceKoef = 100000f;
 
 
     public TestMapScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
         this.myGdxGame = myGdxGame;
         this.batch = batch;
         this.camera = camera;
-        joystick = new Joystick(batch,camera, new Texture("bgJoystick.png"),
+        joystick = new Joystick(batch, camera, new Texture("bgJoystick.png"),
                 new Texture("fgStick.png"), 400, 100);
+
         tmxMapLoader = new TmxMapLoader();
         box2DDebugRenderer = new Box2DDebugRenderer();
         tiledMap = tmxMapLoader.load("jo.tmx");
         renderer = new OrthogonalTiledMapRenderer(tiledMap, unitscale);
 
-        world = new World(new Vector2(0, -98f), true);
+        world = new World(new Vector2(0, -98f * gravityKoef), true);
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
         Body body;
+
 
         for (MapObject object : tiledMap.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -68,48 +68,75 @@ public class TestMapScreen implements Screen {
             shape.setAsBox(rect.getWidth() / 2 * unitscale, rect.getHeight() / 2 * unitscale);
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
-
         }
-        player = new Player(world);
-        Date date1= new Date();
 
-        initializateBackground1(date1);
+
+        Date date1 = new Date();
+
+        player = new Player(world, batch,joystick);
+        if (date1.getHours() > 18) {
+            first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_night3.png");
+        } else {
+            first = new Texture("bg/SET1/png/SET1_bakcground_day1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_day2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_day3.png");
+        }
+
+
+        parallaxBg.put("firstBg", new BackgroundCircle(first, batch, camera, -0.2f));
+        parallaxBg.put("secondBg", new BackgroundCircle(second, batch, camera, -0.15f));
+        parallaxBg.put("thirdBg", new BackgroundCircle(third, batch, camera, -0.3f));
     }
 
     @Override
     public void show() {
 
     }
+
     public void renderBackground(float delta) {
-        for (BackgroundCircle bgCircle : parallaxBg.values()) bgCircle.renderWithY(delta,camera.position.y);
+        for (BackgroundCircle bgCircle : parallaxBg.values())
+            bgCircle.renderWithY(delta, camera.position.y);
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0,0,0,0);
-        camera.position.x += joystick.getResult().x * 10;
-        camera.position.y += joystick.getResult().y * 10;
+        MyGdxGame.leftBottomPointCamera.set(
+                (int) (camera.position.x) - MyGdxGame.WIDTH / 2,
+                (int) (camera.position.x) - MyGdxGame.HEIGHT / 2
+        );
+//        camera.position.x += joystick.getResult().x * 10;
+//        camera.position.y += joystick.getResult().y * 10;
+        camera.position.x = player.body.getPosition().x;
+        camera.position.y = player.body.getPosition().y;
 
-        if(joystick.getResult().y >= 0.75f){
-            player.body.applyForceToCenter(new Vector2(0, 30000), true);
+        if (joystick.getResult().y >= 0.75f) {
+            player.body.applyForceToCenter(new Vector2(0, 30000 * forceKoef), true);
+        }
+        if (joystick.getResult().x >= 0.75f) {
+            player.body.applyForceToCenter(new Vector2(30000, 0), true);
+        }
+        if (joystick.getResult().x <= -0.75f) {
+            player.body.applyForceToCenter(new Vector2(-30000, 0), true);
         }
         camera.update();
 
 
         batch.begin();
         renderBackground(delta);
-
         batch.setProjectionMatrix(camera.combined);
+        renderer.render();
+        player.render(delta);
         batch.end();
         renderer.setView(camera);
-        renderer.render();
+
         box2DDebugRenderer.render(world, camera.combined);
+        world.step(1 / 5f, 6, 2);
 
         batch.begin();
         joystick.render(delta);
         batch.end();
-
-        world.step(1/60f, 6, 2);
     }
 
     @Override
@@ -135,21 +162,5 @@ public class TestMapScreen implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    public void initializateBackground1(Date date1){
-        if (date1.getHours()>18){
-            first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
-            second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
-            third = new Texture("bg/SET1/png/SET1_bakcground_night3.png");
-        } else {
-            first = new Texture("bg/SET1/png/SET1_bakcground_day1.png");
-            second = new Texture("bg/SET1/png/SET1_bakcground_day2.png");
-            third = new Texture("bg/SET1/png/SET1_bakcground_day3.png");
-        }
-
-        parallaxBg.put("firstBg", new BackgroundCircle(first, batch, camera, -0.2f));
-        parallaxBg.put("secondBg", new BackgroundCircle(second, batch, camera, -0.15f));
-        parallaxBg.put("thirdBg", new BackgroundCircle(third, batch, camera, -0.3f));
     }
 }
