@@ -61,35 +61,12 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        long time = TimeUtils.millis();
-        long seconds = (long) (time / 1000);
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long now = hours % 24 + 3;
         camera.position.add(3, 0, 0);
         ScreenUtils.clear(1, 1, 1, 1);
         camera.update();
         batch.begin();
-         if (now > 0 && now < 7) {
-            renderBackground3(delta);
-        } else if (now > 6 && now < 9) {
-            renderBackground2(delta);
-        } else if (now > 8 && now < 14) {
-            renderBackground1(delta);
-        } else if (now > 13 && now < 18) {
-            renderBackground5(delta);
-        } else if (now > 17 && now < 20) {
-            renderBackground6(delta);
-        } else if (now > 19 && now < 21) {
-            renderBackground7(delta);
-        } else if (now > 20 && now < 22) {
-            renderBackground4(delta);
-        } else if (now > 21 && now < 24) {
-            renderBackground8(delta);
-        }
-        renderBackground7(delta);
+        chooseBackground(delta);
         batch.setProjectionMatrix(camera.combined);
-        //if (Gdx.input.justTouched()) myGdxGame.setScreen(myGdxGame.testMapScreen);
         batch.end();
     }
 
@@ -118,6 +95,38 @@ public class MenuScreen implements Screen {
 
     }
 
+    public long findTime(){
+        long time = TimeUtils.millis();
+        long seconds = (long) (time / 1000);
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long now = hours % 24 + 3;
+        if (now >= 24){
+            now = now % 24;
+        }
+        return now;
+    }
+
+    public void chooseBackground(float delta){
+        long now = findTime();
+        if (now >= 0 && now < 7) {
+            renderBackground3(delta);
+        } else if (now > 6 && now < 9) {
+            renderBackground2(delta);
+        } else if (now > 8 && now < 14) {
+            renderBackground1(delta);
+        } else if (now > 13 && now < 18) {
+            renderBackground5(delta);
+        } else if (now > 17 && now < 20) {
+            renderBackground6(delta);
+        } else if (now > 19 && now < 21) {
+            renderBackground7(delta);
+        } else if (now > 20 && now < 22) {
+            renderBackground4(delta);
+        } else if (now > 21 && now < 24) {
+            renderBackground8(delta);
+        }
+    }
 
     public void initializateBackground1(){
         B8L4 = new Texture("MenuBackground1/1.png");
