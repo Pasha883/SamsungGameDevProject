@@ -47,4 +47,16 @@ public class BackgroundCircle {
             );
         }
     }
+    public void renderWithY(float delta,float y ){
+        int lefnBottomCamera = (int)(camera.position.x) - MyGdxGame.WIDTH/2;
+        int startPoint = ((lefnBottomCamera)/(width)) * width - width;
+        for(int i = 0; i < n; i++) {
+            batch.draw(background,
+                    startPoint + i * width + (lefnBottomCamera * parallaxKoef % width),
+                    y-MyGdxGame.HEIGHT/2-5,
+                    width,
+                    height
+            );
+        }
+    }
 }

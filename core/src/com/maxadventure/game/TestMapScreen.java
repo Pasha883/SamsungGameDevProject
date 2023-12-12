@@ -20,6 +20,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+
+import java.util.Date;
+import java.util.HashMap;
+
 public class TestMapScreen implements Screen {
     private MyGdxGame myGdxGame;
     private final SpriteBatch batch;
@@ -32,6 +36,9 @@ public class TestMapScreen implements Screen {
     private float unitscale = 7;
     Player player;
     private Joystick joystick;
+    private Texture first,second,third;
+    private HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
+
 
 
     public TestMapScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
@@ -64,11 +71,31 @@ public class TestMapScreen implements Screen {
 
         }
         player = new Player(world);
+        Date date1= new Date();
+
+        player = new Player(world);
+        if (date1.getHours()>18){
+            first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_night3.png");
+        } else {
+            first = new Texture("bg/SET1/png/SET1_bakcground_day1.png");
+            second = new Texture("bg/SET1/png/SET1_bakcground_day2.png");
+            third = new Texture("bg/SET1/png/SET1_bakcground_day3.png");
+        }
+
+
+        parallaxBg.put("firstBg", new BackgroundCircle(first, batch, camera, -0.2f));
+        parallaxBg.put("secondBg", new BackgroundCircle(second, batch, camera, -0.15f));
+        parallaxBg.put("thirdBg", new BackgroundCircle(third, batch, camera, -0.3f));
     }
 
     @Override
     public void show() {
 
+    }
+    public void renderBackground(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg.values()) bgCircle.renderWithY(delta,camera.position.y);
     }
 
     @Override
@@ -84,6 +111,7 @@ public class TestMapScreen implements Screen {
 
 
         batch.begin();
+        renderBackground(delta);
         joystick.render(delta);
         batch.setProjectionMatrix(camera.combined);
         batch.end();
