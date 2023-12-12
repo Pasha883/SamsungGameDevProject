@@ -2,11 +2,13 @@ package com.maxadventure.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -19,7 +21,7 @@ public class MenuScreen implements Screen {
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
-
+    private int language = 2;
 
     private HashMap<String, BackgroundCircle> parallaxBg1 = new HashMap<>();
     private HashMap<String, BackgroundCircle> parallaxBg2 = new HashMap<>();
@@ -39,10 +41,50 @@ public class MenuScreen implements Screen {
     private Texture B2L1, B2L2, B2L3, B2L4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
 
+    private Texture play01ENG, play02ENG, play01RUS, play02RUS;
+    private Texture settings01ENG, settings02ENG, settings01RUS, settings02RUS;
+    private Texture about01ENG, about02ENG, about01RUS, about02RUS;
+    private Button playENG, playRUS, settingsENG, settingsRUS, aboutENG, aboutRUS;
+    private Sound click;
+
+    private Texture menuTitleENG, menuTitleENGShad, menuTitleRUS, menuTitleRUSShad;
+
     public MenuScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
+        click = Gdx.audio.newSound(Gdx.files.internal("Sounds/Click.mp3"));
+
+        play01ENG = new Texture("MenuAssets/Buttons/Play/ENG/play01.png");
+        play02ENG = new Texture("MenuAssets/Buttons/Play/ENG/play03.png");
+        play01RUS = new Texture("MenuAssets/Buttons/Play/RUS/play01.png");
+        play02RUS = new Texture("MenuAssets/Buttons/Play/RUS/play03.png");
+
+        settings01ENG = new Texture("MenuAssets/Buttons/Settings/ENG/option01.png");
+        settings02ENG = new Texture("MenuAssets/Buttons/Settings/ENG/option03.png");
+        settings01RUS = new Texture("MenuAssets/Buttons/Settings/RUS/option01.png");
+        settings02RUS = new Texture("MenuAssets/Buttons/Settings/RUS/option03.png");
+
+        about01ENG = new Texture("MenuAssets/Buttons/About/ENG/about01.png");
+        about02ENG = new Texture("MenuAssets/Buttons/About/ENG/about03.png");
+        about01RUS = new Texture("MenuAssets/Buttons/About/RUS/about01.png");
+        about02RUS = new Texture("MenuAssets/Buttons/About/RUS/about02.png");
+
         this.batch = batch;
         this.camera = camera;
         this.myGdxGame = myGdxGame;
+
+        playENG = new Button(play01ENG, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
+        playRUS = new Button(play01RUS, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
+
+        settingsENG = new Button(settings01ENG, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
+        settingsRUS = new Button(settings01RUS, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
+
+        aboutENG = new Button(about01ENG, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
+        aboutRUS = new Button(about01RUS, batch,
+                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
 
         initializateBackground1();
         initializateBackground2();
@@ -52,6 +94,9 @@ public class MenuScreen implements Screen {
         initializateBackground6();
         initializateBackground7();
         initializateBackground8();
+
+        initializeMenuElementsRUS();
+        initializeMenuElementsENG();
     }
 
     @Override
@@ -61,11 +106,98 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        MyGdxGame.leftBottomPointCamera.set(
+                (int)(camera.position.x) - MyGdxGame.WIDTH/2,
+                (int)(camera.position.y) - MyGdxGame.HEIGHT/2
+        );
         camera.position.add(3, 0, 0);
         ScreenUtils.clear(1, 1, 1, 1);
         camera.update();
         batch.begin();
         chooseBackground(delta);
+        if (language == 1) {
+            batch.draw(menuTitleENGShad,
+                    camera.position.x - menuTitleENG.getWidth() * 2 + 25,
+                    Gdx.graphics.getHeight() - 425,
+                    menuTitleENG.getWidth() * 4,
+                    menuTitleENG.getHeight() * 4);
+
+            batch.draw(menuTitleENG,
+            camera.position.x - menuTitleENG.getWidth() * 2,
+            Gdx.graphics.getHeight() - 400,
+            menuTitleENG.getWidth() * 4,
+            menuTitleENG.getHeight() * 4);
+
+            playENG.draw();
+            settingsENG.draw();
+            aboutENG.draw();
+
+            if (playENG.isHit()){
+                batch.draw(play02ENG,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 100,
+                        600,
+                        200);
+                click.play();
+            }
+            if (settingsENG.isHit()) {
+                batch.draw(settings02ENG,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 300,
+                        600,
+                        200);
+                click.play();
+            }
+            if (aboutENG.isHit()) {
+                batch.draw(about02ENG,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 500,
+                        600,
+                        200);
+                click.play();
+            }
+        } else if (language == 2) {
+            batch.draw(menuTitleRUSShad,
+                    camera.position.x - menuTitleENG.getWidth() * 2 + 25,
+                    Gdx.graphics.getHeight() - 425,
+                    menuTitleENG.getWidth() * 4,
+                    menuTitleENG.getHeight() * 4);
+
+            batch.draw(menuTitleRUS,
+                    camera.position.x - menuTitleENG.getWidth() * 2,
+                    Gdx.graphics.getHeight() - 400,
+                    menuTitleENG.getWidth() * 4,
+                    menuTitleENG.getHeight() * 4);
+
+            playRUS.draw();
+            settingsRUS.draw();
+            aboutRUS.draw();
+
+            if (playRUS.isHit()){
+                batch.draw(play02RUS,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 100,
+                        600,
+                        200);
+                click.play();
+            }
+            if (settingsRUS.isHit()){
+                batch.draw(settings02RUS,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 300,
+                        600,
+                        200);
+                click.play();
+            }
+            if (aboutRUS.isHit()){
+                batch.draw(about02ENG,
+                        camera.position.x - 300,
+                        Gdx.graphics.getHeight() / 2 - 500,
+                        600,
+                        200);
+                click.play();
+            }
+        }
         batch.setProjectionMatrix(camera.combined);
         batch.end();
     }
@@ -126,6 +258,16 @@ public class MenuScreen implements Screen {
         } else if (now > 21 && now < 24) {
             renderBackground8(delta);
         }
+    }
+
+    public void initializeMenuElementsRUS(){
+        menuTitleRUS = new Texture("MenuAssets/RUS/TitleMenu.png");
+        menuTitleRUSShad = new Texture("MenuAssets/RUS/TitleMenuShad.png");
+    }
+
+    public void initializeMenuElementsENG(){
+        menuTitleENG = new Texture("MenuAssets/ENG/TitleENG.png");
+        menuTitleENGShad = new Texture("MenuAssets/ENG/TitleENGShad.png");
     }
 
     public void initializateBackground1(){

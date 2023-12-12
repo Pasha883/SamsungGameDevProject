@@ -73,7 +73,6 @@ public class TestMapScreen implements Screen {
         player = new Player(world);
         Date date1= new Date();
 
-        player = new Player(world);
         initializateBackground1(date1);
     }
 
@@ -99,12 +98,16 @@ public class TestMapScreen implements Screen {
 
         batch.begin();
         renderBackground(delta);
-        joystick.render(delta);
+
         batch.setProjectionMatrix(camera.combined);
         batch.end();
         renderer.setView(camera);
         renderer.render();
         box2DDebugRenderer.render(world, camera.combined);
+
+        batch.begin();
+        joystick.render(delta);
+        batch.end();
 
         world.step(1/60f, 6, 2);
     }
@@ -135,7 +138,6 @@ public class TestMapScreen implements Screen {
     }
 
     public void initializateBackground1(Date date1){
-        player = new Player(world);
         if (date1.getHours()>18){
             first = new Texture("bg/SET1/png/SET1_bakcground_night1.png");
             second = new Texture("bg/SET1/png/SET1_bakcground_night2.png");
