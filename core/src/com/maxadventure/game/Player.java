@@ -74,7 +74,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesRunLeft = TextureRegion.split(runLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesRunLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 8; j++) animationFramesRunLeft.add(texturesRunLeft[i][j]);
+            for (int j = 7; j >= 0; j--) animationFramesRunLeft.add(texturesRunLeft[i][j]);
         }
         animationRunLeft = new Animation<TextureRegion>(0.1f, animationFramesRunLeft, Animation.PlayMode.LOOP);
 
@@ -139,7 +139,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesDearthLeft = TextureRegion.split(deathLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesDearthLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 7; j++) animationFramesDearthLeft.add(texturesDearthLeft[i][j]);
+            for (int j = 6; j >= 0; j--) animationFramesDearthLeft.add(texturesDearthLeft[i][j]);
         }
         animationDeathLeft = new Animation<TextureRegion>(0.1f, animationFramesDearthLeft, Animation.PlayMode.LOOP);
 
@@ -155,7 +155,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesFallLeft = TextureRegion.split(fallLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesFallLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 0; j < 3; j++) animationFramesFallLeft.add(texturesFallLeft[i][j]);
+            for (int j = 2; j >= 0; j--) animationFramesFallLeft.add(texturesFallLeft[i][j]);
         }
         animationFallLeft = new Animation<TextureRegion>(0.1f, animationFramesFallLeft, Animation.PlayMode.LOOP);
 

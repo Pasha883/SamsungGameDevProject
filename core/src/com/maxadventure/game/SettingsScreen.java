@@ -5,21 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
-public class MenuScreen implements Screen {
-    private long startMillis = 0;
-    private int counter = 0;
-    private boolean isStarted = false;
+public class SettingsScreen implements Screen {
 
     private  MyGdxGame myGdxGame;
     private final SpriteBatch batch;
@@ -45,54 +39,84 @@ public class MenuScreen implements Screen {
     private Texture B2L1, B2L2, B2L3, B2L4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
 
-    private Texture play01ENG, play02ENG, play01RUS, play02RUS;
-    private Texture settings01ENG, settings02ENG, settings01RUS, settings02RUS;
-    private Texture about01ENG, about02ENG, about01RUS, about02RUS, secBUT;
-    private Button playENG, playRUS, settingsENG, settingsRUS, aboutENG, aboutRUS, secBut;
-    private Sound click, huh, boom;
+    private Texture ENG01, ENG02, RUS01, RUS02;
+    private Texture stat01ENG, stat02ENG, stat01RUS, stat02RUS;
+    private Texture dynam01ENG, dynam02ENG, dynam01RUS, dynam02RUS, BLM;
+    private Texture back01ENG, back02ENG, back01RUS, back02RUS;
+    private Button ENG, RUS, staticRUS, staticENG, dynamRUS, dynamENG, backRUS, backENG;
 
-    private Texture menuTitleENG, menuTitleENGShad, menuTitleRUS, menuTitleRUSShad;
+    private Texture JMTENG, LTENG, NSTENG, STENG, SeTENG;
+    private Texture JMTRUS, LTRUS, NSTRUS, STRUS, SeTRUS;
+    private Sound click;
+    private Sprite BLMM;
 
-    public MenuScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
+    public SettingsScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
         click = Gdx.audio.newSound(Gdx.files.internal("Sounds/Click.mp3"));
-        huh = Gdx.audio.newSound(Gdx.files.internal("MenuAssets/huh.mp3"));
-        boom = Gdx.audio.newSound(Gdx.files.internal("MenuAssets/boom.mp3"));
 
-        play01ENG = new Texture("MenuAssets/Buttons/Play/ENG/play01.png");
-        play02ENG = new Texture("MenuAssets/Buttons/Play/ENG/play03.png");
-        play01RUS = new Texture("MenuAssets/Buttons/Play/RUS/play01.png");
-        play02RUS = new Texture("MenuAssets/Buttons/Play/RUS/play03.png");
+        ENG01 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng01.png");
+        ENG02 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng02.png");
+        RUS01 = new Texture("SettingsScreenAssets/Buttons/Language/RUS/Rus01.png");
+        RUS02 = new Texture("SettingsScreenAssets/Buttons/Language/RUS/Rus02.png");
 
-        settings01ENG = new Texture("MenuAssets/Buttons/Settings/ENG/option01.png");
-        settings02ENG = new Texture("MenuAssets/Buttons/Settings/ENG/option03.png");
-        settings01RUS = new Texture("MenuAssets/Buttons/Settings/RUS/option01.png");
-        settings02RUS = new Texture("MenuAssets/Buttons/Settings/RUS/option03.png");
+        stat01ENG = new Texture("SettingsScreenAssets/Buttons/Static/ENG/Stat01.png");
+        stat02ENG = new Texture("SettingsScreenAssets/Buttons/Static/ENG/Stat02.png");
+        stat01RUS = new Texture("SettingsScreenAssets/Buttons/Static/RUS/Stat01.png");
+        stat02RUS = new Texture("SettingsScreenAssets/Buttons/Static/RUS/Stat02.png");
 
-        about01ENG = new Texture("MenuAssets/Buttons/About/ENG/about01.png");
-        about02ENG = new Texture("MenuAssets/Buttons/About/ENG/about03.png");
-        about01RUS = new Texture("MenuAssets/Buttons/About/RUS/about01.png");
-        about02RUS = new Texture("MenuAssets/Buttons/About/RUS/about02.png");
+        dynam01ENG = new Texture("SettingsScreenAssets/Buttons/Dynamic/ENG/Dynam01.png");
+        dynam02ENG = new Texture("SettingsScreenAssets/Buttons/Dynamic/ENG/Dynam02.png");
+        dynam01RUS = new Texture("SettingsScreenAssets/Buttons/Dynamic/RUS/Dynam01.png");
+        dynam02RUS = new Texture("SettingsScreenAssets/Buttons/Dynamic/RUS/Dynam02.png");
 
-        secBUT = new Texture("MenuAssets/SecBut.png");
+        back01ENG = new Texture("SettingsScreenAssets/Buttons/Back/ENG/back01.png");
+        back02ENG = new Texture("SettingsScreenAssets/Buttons/Back/ENG/back03.png");
+        back01RUS = new Texture("SettingsScreenAssets/Buttons/Back/RUS/back01.png");
+        back02RUS = new Texture("SettingsScreenAssets/Buttons/Back/RUS/back03.png");
+
+        JMTENG = new Texture("SettingsScreenAssets/Assets/ENG/JoyModeText.png");
+        LTENG = new Texture("SettingsScreenAssets/Assets/ENG/LangText.png");
+        NSTENG = new Texture("SettingsScreenAssets/Assets/ENG/NonStatText.png");
+        STENG = new Texture("SettingsScreenAssets/Assets/ENG/StatText.png");
+        SeTENG = new Texture("SettingsScreenAssets/Assets/ENG/SettText.png");
+
+        JMTENG = new Texture("SettingsScreenAssets/Assets/ENG/JoyModeText.png");
+        LTENG = new Texture("SettingsScreenAssets/Assets/ENG/LangText.png");
+        NSTENG = new Texture("SettingsScreenAssets/Assets/ENG/NonStatText.png");
+        STENG = new Texture("SettingsScreenAssets/Assets/ENG/StatText.png");
+        SeTENG = new Texture("SettingsScreenAssets/Assets/ENG/SettText.png");
+
+        JMTRUS = new Texture("SettingsScreenAssets/Assets/RUS/JoyModeText.png");
+        LTRUS = new Texture("SettingsScreenAssets/Assets/RUS/LangText.png");
+        NSTRUS = new Texture("SettingsScreenAssets/Assets/RUS/NonStatText.png");
+        STRUS = new Texture("SettingsScreenAssets/Assets/RUS/StatText.png");
+        SeTRUS = new Texture("SettingsScreenAssets/Assets/RUS/SettText.png");
+
+        BLM = new Texture("SettingsScreenAssets/BLM.jpg");
+        BLMM = new Sprite(BLM);
 
         this.batch = batch;
         this.camera = camera;
         this.myGdxGame = myGdxGame;
 
-        playENG = new Button(play01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
-        playRUS = new Button(play01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
+        ENG = new Button(ENG01, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 + 100));
+        RUS = new Button(RUS01, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 + 100));
 
-        settingsENG = new Button(settings01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
-        settingsRUS = new Button(settings01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
+        staticENG = new Button(stat01ENG, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 - 230));
+        staticRUS = new Button(stat01RUS, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 - 230));
 
-        aboutENG = new Button(about01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
-        aboutRUS = new Button(about01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
+        dynamENG = new Button(dynam01ENG, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 - 230));
+        dynamRUS = new Button(dynam01RUS, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() / 2 - 250, Gdx.graphics.getHeight() / 2 - 230));
+
+        backENG = new Button(back01ENG, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() / 2 - 500));
+        backRUS = new Button(back01RUS, batch,
+                500, 160, new Vector2(Gdx.graphics.getWidth() - 500, Gdx.graphics.getHeight() / 2 - 500));
 
         initializateBackground1();
         initializateBackground2();
@@ -105,26 +129,19 @@ public class MenuScreen implements Screen {
 
         initializeMenuElementsRUS();
         initializeMenuElementsENG();
-
-        secBut = new Button(secBUT, batch, (int) (menuTitleENG.getWidth() * 4),
-                (int)(menuTitleENG.getHeight() * 4), new Vector2 (
-                camera.position.x - menuTitleENG.getWidth() * 2,
-                Gdx.graphics.getHeight() - 400));
     }
 
     @Override
     public void show() {
-        this.lang = MyGdxGame.language;
-        isStarted = false;
-        counter = 0;
+        BLMM.setAlpha(0.5f);
     }
 
     @Override
     public void render(float delta) {
-        if (TimeUtils.millis() - startMillis > 5000 && isStarted == true){
-            myGdxGame.setScreen(myGdxGame.memeMenuScreen);
-        }
+        boolean isStat = MyGdxGame.isJoysticStatic;
         lang = MyGdxGame.language;
+        BLMM.setPosition((int)(camera.position.x) - MyGdxGame.WIDTH/2,
+                (int)(camera.position.y) - MyGdxGame.HEIGHT/2);
         MyGdxGame.leftBottomPointCamera.set(
                 (int)(camera.position.x) - MyGdxGame.WIDTH/2,
                 (int)(camera.position.y) - MyGdxGame.HEIGHT/2
@@ -134,102 +151,142 @@ public class MenuScreen implements Screen {
         camera.update();
         batch.begin();
         chooseBackground(delta);
+        BLMM.draw(batch);
         if (lang == 1) {
-            batch.draw(menuTitleENGShad,
-                    camera.position.x - menuTitleENG.getWidth() * 2 + 25,
-                    Gdx.graphics.getHeight() - 425,
-                    menuTitleENG.getWidth() * 4,
-                    menuTitleENG.getHeight() * 4);
+            batch.draw(SeTENG,
+                    (int) (camera.position.x - SeTENG.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 100,
+                    SeTENG.getWidth() * 3,
+                    SeTENG.getHeight() * 3);
 
-            batch.draw(menuTitleENG,
-            camera.position.x - menuTitleENG.getWidth() * 2,
-            Gdx.graphics.getHeight() - 400,
-            menuTitleENG.getWidth() * 4,
-            menuTitleENG.getHeight() * 4);
+            batch.draw(LTENG,
+                    (int) (camera.position.x - LTENG.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 260,
+                    LTENG.getWidth() * 3,
+                    LTENG.getHeight() * 3);
 
-            playENG.draw();
-            settingsENG.draw();
-            aboutENG.draw();
+            batch.draw(JMTENG,
+                    (int) (camera.position.x - JMTENG.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 600,
+                    JMTENG.getWidth() * 3,
+                    JMTENG.getHeight() * 3);
+            ENG.draw();
+            if (isStat == true) {
+                staticENG.draw();
+                batch.draw(STENG,
+                        (int) (camera.position.x - STENG.getWidth() * 1),
+                        Gdx.graphics.getHeight() - 960,
+                        STENG.getWidth() * 2,
+                        STENG.getHeight() * 2);
+            } else if (isStat == false) {
+                dynamENG.draw();
+                batch.draw(NSTENG,
+                        (int) (camera.position.x - NSTENG.getWidth() * 1),
+                        Gdx.graphics.getHeight() - 880,
+                        NSTENG.getWidth() * 2,
+                        NSTENG.getHeight() * 2);
+            }
 
-            if (playENG.isHit()){
-                batch.draw(play02ENG,
-                        camera.position.x - 300,
-                        Gdx.graphics.getHeight() / 2 - 100,
-                        600,
-                        200);
-                click.play();
-                myGdxGame.setScreen(myGdxGame.testMapScreen);
-            }
-            if (settingsENG.isHit()) {
-                batch.draw(settings02ENG,
-                        camera.position.x - 300,
-                        Gdx.graphics.getHeight() / 2 - 300,
-                        600,
-                        200);
-                click.play();
-                myGdxGame.setScreen(myGdxGame.settingsScreen);
-            }
-            if (aboutENG.isHit()) {
-                batch.draw(about02ENG,
-                        camera.position.x - 300,
-                        Gdx.graphics.getHeight() / 2 - 500,
-                        600,
-                        200);
-                click.play();
-            }
+            backENG.draw();
         } else if (lang == 2) {
-            batch.draw(menuTitleRUSShad,
-                    camera.position.x - menuTitleENG.getWidth() * 2 + 25,
-                    Gdx.graphics.getHeight() - 425,
-                    menuTitleENG.getWidth() * 4,
-                    menuTitleENG.getHeight() * 4);
+            batch.draw(SeTRUS,
+                    (int) (camera.position.x - SeTRUS.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 100,
+                    SeTRUS.getWidth() * 3,
+                    SeTRUS.getHeight() * 3);
 
-            batch.draw(menuTitleRUS,
-                    camera.position.x - menuTitleENG.getWidth() * 2,
-                    Gdx.graphics.getHeight() - 400,
-                    menuTitleENG.getWidth() * 4,
-                    menuTitleENG.getHeight() * 4);
+            batch.draw(LTRUS,
+                    (int) (camera.position.x - LTRUS.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 260,
+                    LTRUS.getWidth() * 3,
+                    LTENG.getHeight() * 3);
 
-            playRUS.draw();
-            settingsRUS.draw();
-            aboutRUS.draw();
-
-            if (playRUS.isHit()){
-                batch.draw(play02RUS,
-                        camera.position.x - 300,
-                        Gdx.graphics.getHeight() / 2 - 100,
-                        600,
-                        200);
-                click.play();
-                myGdxGame.setScreen(myGdxGame.testMapScreen);
+            batch.draw(JMTRUS,
+                    (int) (camera.position.x - JMTRUS.getWidth() * 1.5),
+                    Gdx.graphics.getHeight() - 600,
+                    JMTRUS.getWidth() * 3,
+                    JMTRUS.getHeight() * 3);
+            RUS.draw();
+            if (isStat == true) {
+                staticRUS.draw();
+                batch.draw(STRUS,
+                        (int) (camera.position.x - STRUS.getWidth() * 1),
+                        Gdx.graphics.getHeight() - 960,
+                        STRUS.getWidth() * 2,
+                        STRUS.getHeight() * 2);
+            } else if (isStat == false) {
+                dynamRUS.draw();
+                batch.draw(NSTRUS,
+                        (int) (camera.position.x - NSTRUS.getWidth() * 1),
+                        Gdx.graphics.getHeight() - 880,
+                        NSTRUS.getWidth() * 2,
+                        NSTRUS.getHeight() * 2);
             }
-            if (settingsRUS.isHit()){
-                batch.draw(settings02RUS,
-                        camera.position.x - 300,
-                        Gdx.graphics.getHeight() / 2 - 300,
-                        600,
-                        200);
+
+            backRUS.draw();
+        }
+
+        if (staticENG.isHit() || staticRUS.isHit() || dynamENG.isHit() || dynamRUS.isHit()) {
+            if (isStat == true) {
+                MyGdxGame.isJoysticStatic = false;
                 click.play();
-                myGdxGame.setScreen(myGdxGame.settingsScreen);
+                if (lang == 1) {
+                    batch.draw(stat02ENG,
+                            camera.position.x - 250,
+                            Gdx.graphics.getHeight() / 2 - 230,
+                            500,
+                            160);
+                }
+            } else if (isStat == false) {
+                MyGdxGame.isJoysticStatic = true;
+                click.play();
+                if (lang == 1) {
+                    batch.draw(dynam02ENG,
+                            camera.position.x - 250,
+                            Gdx.graphics.getHeight() / 2 - 230,
+                            500,
+                            160);
+                }
             }
-            if (aboutRUS.isHit()){
-                batch.draw(about02RUS,
-                        camera.position.x - 300,
+        }
+
+        if(backENG.isHit() || backRUS.isHit()){
+            myGdxGame.setScreen(myGdxGame.menuScreen);
+            click.play();
+            if (lang == 1) {
+                batch.draw(back02ENG,
+                        camera.position.x - 250,
                         Gdx.graphics.getHeight() / 2 - 500,
-                        600,
-                        200);
-                click.play();
+                        500,
+                        160);
+            } else if (lang == 2) {
+                batch.draw(back02RUS,
+                        camera.position.x - 250,
+                        Gdx.graphics.getHeight() / 2 - 500,
+                        500,
+                        160);
             }
         }
-        if (secBut.isHit()){
-            if (counter < 5)
-                huh.play();
-                counter += 1;
-            if (counter == 4)
-                boom.play();
-                isStarted = true;
-                startMillis = TimeUtils.millis();
+
+        if (RUS.isHit() || ENG.isHit()){
+            click.play();
+            if (lang == 1){
+                MyGdxGame.language = 2;
+                batch.draw(ENG02,
+                        camera.position.x - 250,
+                        Gdx.graphics.getHeight() / 2 + 100,
+                        500,
+                        160);
+            } else if(lang == 2){
+                MyGdxGame.language = 1;
+                batch.draw(RUS02,
+                        camera.position.x - 250,
+                        Gdx.graphics.getHeight() / 2 + 100,
+                        500,
+                        160);
+            }
         }
+
         batch.setProjectionMatrix(camera.combined);
         batch.end();
     }
@@ -259,18 +316,6 @@ public class MenuScreen implements Screen {
 
     }
 
-    public long findTime(){
-        long time = TimeUtils.millis();
-        long seconds = (long) (time / 1000);
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long now = hours % 24 + 3;
-        if (now >= 24){
-            now = now % 24;
-        }
-        return now;
-    }
-
     public void chooseBackground(float delta){
         long now = findTime();
         if (now >= 0 && now < 7) {
@@ -292,14 +337,26 @@ public class MenuScreen implements Screen {
         }
     }
 
+    public long findTime(){
+        long time = TimeUtils.millis();
+        long seconds = (long) (time / 1000);
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long now = hours % 24 + 3;
+        if (now >= 24){
+            now = now % 24;
+        }
+        return now;
+    }
+
     public void initializeMenuElementsRUS(){
-        menuTitleRUS = new Texture("MenuAssets/RUS/TitleMenu.png");
-        menuTitleRUSShad = new Texture("MenuAssets/RUS/TitleMenuShad.png");
+       // menuTitleRUS = new Texture("MenuAssets/RUS/TitleMenu.png");
+       // menuTitleRUSShad = new Texture("MenuAssets/RUS/TitleMenuShad.png");
     }
 
     public void initializeMenuElementsENG(){
-        menuTitleENG = new Texture("MenuAssets/ENG/TitleENG.png");
-        menuTitleENGShad = new Texture("MenuAssets/ENG/TitleENGShad.png");
+        //menuTitleENG = new Texture("MenuAssets/ENG/TitleENG.png");
+        //menuTitleENGShad = new Texture("MenuAssets/ENG/TitleENGShad.png");
     }
 
     public void initializateBackground1(){

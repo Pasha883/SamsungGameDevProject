@@ -12,10 +12,17 @@ public class MyGdxGame extends Game {
     public static int HEIGHT, WIDTH;
     public OrthographicCamera camera;
 
+    public static boolean isJoysticStatic = false;
+
     public IntroScreen introScreen;
     public TestMapScreen testMapScreen;
     public MenuScreen menuScreen;
+    public SettingsScreen settingsScreen;
+    public MemeMenuScreen memeMenuScreen;
+
     public static Vector2 leftBottomPointCamera = new Vector2();
+
+    public static int language = 1;
 
     Texture img;
 
@@ -29,13 +36,15 @@ public class MyGdxGame extends Game {
         camera.setToOrtho(false, WIDTH, HEIGHT);
         introScreen = new IntroScreen(this, batch, camera);
         testMapScreen = new TestMapScreen(this, batch, camera);
+        settingsScreen = new SettingsScreen(this, batch, camera);
+        memeMenuScreen = new MemeMenuScreen(this, batch, camera);
         leftBottomPointCamera.set(
                 (int)(camera.position.x) - MyGdxGame.WIDTH/2,
                 (int)(camera.position.y) - MyGdxGame.HEIGHT/2
         );
 
         menuScreen = new MenuScreen(this, batch, camera);
-        setScreen(testMapScreen);
+        setScreen(introScreen);
     }
 
 

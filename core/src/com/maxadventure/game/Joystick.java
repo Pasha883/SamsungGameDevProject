@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector4;
 
 public class Joystick {
+    boolean flag = false;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Texture bgCircle, fgTexture;
@@ -27,10 +28,11 @@ public class Joystick {
     }
 
     public void render(float delta){
+        isStatic = MyGdxGame.isJoysticStatic;
         calculatePosition();
         editResult();
 //        System.out.println(result);
-        if(isStatic || Gdx.input.isTouched()){
+        if(isStatic || Gdx.input.isTouched() && Gdx.input.getX() < MyGdxGame.WIDTH / 2){
             batch.draw( bgCircle,
                     leftBottomPointOfCamera.x + centerPosition.x - bgCircleSize/2f,
                     leftBottomPointOfCamera.y + centerPosition.y - bgCircleSize/2f,
@@ -52,6 +54,7 @@ public class Joystick {
         result.set(0, 0);
         isTouchedInsideCircle = false;
         activeCenterPosition.set(centerPosition);
+        flag = false;
     }
 
     private void calculatePosition() {
@@ -72,13 +75,14 @@ public class Joystick {
                 isTouchedInsideCircle = true;
             }
         }
-        else if (Gdx.input.justTouched() && !Gdx.input.isTouched()) {
+        else if (Gdx.input.justTouched() && flag == false && Gdx.input.getX() < MyGdxGame.WIDTH / 2) {
             centerPosition.set(
                     (Gdx.input.getX()),
                     (camera.viewportHeight - Gdx.input.getY())
             );
+            flag = true;
         }
-        if(Gdx.input.isTouched() && (!isStatic || isTouchedInsideCircle)){
+        if(Gdx.input.isTouched() && (!isStatic || isTouchedInsideCircle) && Gdx.input.getX() < MyGdxGame.WIDTH / 2){
             activeCenterPosition.set(
                     (Gdx.input.getX()),
                     (camera.viewportHeight - Gdx.input.getY())
@@ -124,6 +128,7 @@ public class Joystick {
     }
 
     public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
+
+        MyGdxGame.isJoysticStatic = aStatic;
     }
 }
