@@ -1,25 +1,26 @@
 package com.maxadventure.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector4;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
-public class Joystick {
-    boolean flag = false;
-    private SpriteBatch batch;
+public class Joystick extends Actor {
     private OrthographicCamera camera;
     private Texture bgCircle, fgTexture;
     private float bgCircleSize, fgTextureSize, currentLength;
-    private boolean isStatic = true, isTouchedInsideCircle = false;
+    private boolean isStatic = false, isTouchedInsideCircle = false;
     private Vector2 centerPosition = new Vector2(), activeCenterPosition = new Vector2();
-    private Vector2 leftBottomPointOfCamera = new Vector2(), result = new Vector2();
+    private Vector2 result = new Vector2();
+    private FitViewport gameViewport;
+    private float defaultX = 3, defaultY = 3;
 
-    public Joystick(SpriteBatch batch, OrthographicCamera camera, Texture bgCircle, Texture fgTexture, float bgCircleSize, float fgTextureSize) {
-        this.batch = batch;
+    public Joystick(FitViewport gameViewport, OrthographicCamera camera, Texture bgCircle, Texture fgTexture, float bgCircleSize, float fgTextureSize) {
+        this.gameViewport = gameViewport;
         this.camera = camera;
         this.bgCircle = bgCircle;
         this.fgTexture = fgTexture;
@@ -27,21 +28,25 @@ public class Joystick {
         this.fgTextureSize = fgTextureSize;
     }
 
-    public void render(float delta){
-        isStatic = MyGdxGame.isJoysticStatic;
+    public void setDefaultPosition(float x, float y){
+        defaultX = x;
+        defaultY = y;
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha){
         calculatePosition();
         editResult();
-//        System.out.println(result);
-        if(isStatic || Gdx.input.isTouched() && Gdx.input.getX() < MyGdxGame.WIDTH / 2){
+        if(isStatic || Gdx.input.isTouched()){
             batch.draw( bgCircle,
-                    leftBottomPointOfCamera.x + centerPosition.x - bgCircleSize/2f,
-                    leftBottomPointOfCamera.y + centerPosition.y - bgCircleSize/2f,
+                    centerPosition.x - bgCircleSize/2f,
+                    centerPosition.y - bgCircleSize/2f,
                     bgCircleSize,
                     bgCircleSize
             );
             batch.draw( fgTexture,
-                    leftBottomPointOfCamera.x + activeCenterPosition.x - fgTextureSize/2f,
-                    leftBottomPointOfCamera.y + activeCenterPosition.y - fgTextureSize/2f,
+                    activeCenterPosition.x - fgTextureSize/2f,
+                    activeCenterPosition.y - fgTextureSize/2f,
                     fgTextureSize,
                     fgTextureSize
             );
@@ -54,38 +59,60 @@ public class Joystick {
         result.set(0, 0);
         isTouchedInsideCircle = false;
         activeCenterPosition.set(centerPosition);
-        flag = false;
+//        if(isStatic){
+//            centerPosition.set(
+//                    defaultX,
+//                    defaultY
+//            );
+//        }
+//        else {
+//            centerPosition.set(
+//                    -100,
+//                    -100
+//            );
+//        }
+//        activeCenterPosition.set(centerPosition);
     }
 
     private void calculatePosition() {
-        leftBottomPointOfCamera.set(
-                camera.position.x - camera.viewportWidth/2f,
-                camera.position.y - camera.viewportHeight/2f
-        );
         if(isStatic) {
             centerPosition.set(
-                    bgCircleSize * 0.5f,
-                    bgCircleSize * 0.7f
+                    defaultX,
+                    defaultY
             );
             if(Gdx.input.isTouched() &&
-                    new Vector2(Gdx.input.getX(), MyGdxGame.HEIGHT -  Gdx.input.getY()).sub(
+                    new Vector2(
+                            gameViewport.unproject(
+                                    new Vector2(
+                                            (Gdx.input.getX()),
+                                            (Gdx.input.getY())
+                                    )
+                            )
+                    ).sub(
                             centerPosition.x,
                             centerPosition.y
                     ).len() <= bgCircleSize/2f){
                 isTouchedInsideCircle = true;
             }
         }
-        else if (Gdx.input.justTouched() && flag == false && Gdx.input.getX() < MyGdxGame.WIDTH / 2) {
+        else if (Gdx.input.justTouched()) {
             centerPosition.set(
-                    (Gdx.input.getX()),
-                    (camera.viewportHeight - Gdx.input.getY())
+                    gameViewport.unproject(
+                            new Vector2(
+                                    (Gdx.input.getX()),
+                                    (Gdx.input.getY())
+                            )
+                    )
             );
-            flag = true;
         }
-        if(Gdx.input.isTouched() && (!isStatic || isTouchedInsideCircle) && Gdx.input.getX() < MyGdxGame.WIDTH / 2){
+        if(Gdx.input.isTouched() && (!isStatic || isTouchedInsideCircle)){
             activeCenterPosition.set(
-                    (Gdx.input.getX()),
-                    (camera.viewportHeight - Gdx.input.getY())
+                    gameViewport.unproject(
+                            new Vector2(
+                                    (Gdx.input.getX()),
+                                    (Gdx.input.getY())
+                            )
+                    )
             );
         }
         activeCenterPosition = limitVector(centerPosition, activeCenterPosition, bgCircleSize/2f);
@@ -128,7 +155,6 @@ public class Joystick {
     }
 
     public void setStatic(boolean aStatic) {
-
-        MyGdxGame.isJoysticStatic = aStatic;
+        isStatic = aStatic;
     }
 }

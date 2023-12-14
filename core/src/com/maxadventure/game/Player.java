@@ -14,6 +14,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
+
+
 public class Player extends Sprite {
     private World world;
     public Body body;
@@ -25,10 +27,10 @@ public class Player extends Sprite {
             animationAttack1Right, animationAttack2Right, animationAttack3Right, animationDeathRight,
             animationFallRight, animationTakeHitRight, animationAttack1Left, animationAttack2Left,
             animationAttack3Left, animationDeathLeft, animationFallLeft, animationTakeHitLeft,
-            animationJumpRight,animationJumpLeft;
+            animationJumpRight, animationJumpLeft;
     SpriteBatch batch;
     private float speed = 100, width = 162, height = 162;
-    private float size = (float) 534;
+    private float size = (float) 0.0001;
     public static Joystick joystick;
 
 
@@ -74,7 +76,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesRunLeft = TextureRegion.split(runLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesRunLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 7; j >= 0; j--) animationFramesRunLeft.add(texturesRunLeft[i][j]);
+            for (int j = 0; j < 8; j++) animationFramesRunLeft.add(texturesRunLeft[i][j]);
         }
         animationRunLeft = new Animation<TextureRegion>(0.1f, animationFramesRunLeft, Animation.PlayMode.LOOP);
 
@@ -139,7 +141,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesDearthLeft = TextureRegion.split(deathLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesDearthLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 6; j >= 0; j--) animationFramesDearthLeft.add(texturesDearthLeft[i][j]);
+            for (int j = 0; j < 7; j++) animationFramesDearthLeft.add(texturesDearthLeft[i][j]);
         }
         animationDeathLeft = new Animation<TextureRegion>(0.1f, animationFramesDearthLeft, Animation.PlayMode.LOOP);
 
@@ -155,7 +157,7 @@ public class Player extends Sprite {
         TextureRegion[][] texturesFallLeft = TextureRegion.split(fallLeft, (int) width, (int) height);
         Array<TextureRegion> animationFramesFallLeft = new Array<>();
         for (int i = 0; i < 1; i++) {
-            for (int j = 2; j >= 0; j--) animationFramesFallLeft.add(texturesFallLeft[i][j]);
+            for (int j = 0; j < 3; j++) animationFramesFallLeft.add(texturesFallLeft[i][j]);
         }
         animationFallLeft = new Animation<TextureRegion>(0.1f, animationFramesFallLeft, Animation.PlayMode.LOOP);
 
@@ -180,14 +182,16 @@ public class Player extends Sprite {
 
     private void definePlayer() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(new Vector2(400, 2500));
+        bodyDef.position.set(new Vector2(80,330));
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = world.createBody(bodyDef);
 
         FixtureDef fixtureDef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 3.5f, (int) (height / 2));
+        shape.setAsBox(5, 5);
         fixtureDef.shape = shape;
+        fixtureDef.friction = 0.95f;
+        fixtureDef.density = 0;
         body.createFixture(fixtureDef);
 
     }
@@ -197,15 +201,23 @@ public class Player extends Sprite {
         time += delta;
 //        batch.draw(animationTakeHitLeft.getKeyFrame(time), body.getPosition().x - (int) (width * 1.7),
 //                body.getPosition().y - (int) (height * 1.7), size, size);
-        if (joystick.getResult().x > -0.75f && joystick.getResult().x < 0.75f)
-            batch.draw(animationIdle.getKeyFrame(time), body.getPosition().x - (int) (width * 1.7),
-                    body.getPosition().y - (int) (height * 1.7), size, size);
+
         if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f)
-            batch.draw(animationRunRight.getKeyFrame(time), body.getPosition().x - (int) (width * 1.7),
-                    body.getPosition().y - (int) (height * 1.7), size, size);
+            batch.draw(animationRunRight.getKeyFrame(time), body.getPosition().x,
+                    body.getPosition().y, size * width, size * height);
         if (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f)
-            batch.draw(animationRunLeft.getKeyFrame(time), body.getPosition().x - (int) (width * 1.7),
-                    body.getPosition().y - (int) (height * 1.7), size, size);
+            batch.draw(animationRunLeft.getKeyFrame(time), body.getPosition().x,
+                    body.getPosition().y , size * width, size * height);
+
+        if (joystick.getResult().y <= -0.1f && joystick.getResult().x < 0.75f && joystick.getResult().x > -0.75f) {
+            batch.draw(animationJumpRight.getKeyFrame(time), body.getPosition().x,
+                    body.getPosition().y, size * width, size * height);
+        }
+        else {
+            if (joystick.getResult().x > -0.75f && joystick.getResult().x < 0.75f)
+                batch.draw(animationIdle.getKeyFrame(time), 330,
+                        80, 20, 20);
+        }
 
 //        if (joystick.getResult().y > 0.75f)
 //            if (joystick.getResult().x > 0)
@@ -214,6 +226,7 @@ public class Player extends Sprite {
 
 
     }
+
 
 
 }

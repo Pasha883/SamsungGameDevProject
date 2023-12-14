@@ -222,13 +222,15 @@ public class MenuScreen implements Screen {
             }
         }
         if (secBut.isHit()){
-            if (counter < 5)
+            if (counter < 5) {
                 huh.play();
                 counter += 1;
-            if (counter == 4)
+            }
+            if (counter == 4) {
                 boom.play();
                 isStarted = true;
                 startMillis = TimeUtils.millis();
+            }
         }
         batch.setProjectionMatrix(camera.combined);
         batch.end();

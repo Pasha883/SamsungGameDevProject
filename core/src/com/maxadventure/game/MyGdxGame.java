@@ -9,8 +9,15 @@ import com.badlogic.gdx.math.Vector2;
 
 public class MyGdxGame extends Game {
     SpriteBatch batch;
-    public static int HEIGHT, WIDTH;
+    //public static int HEIGHT, WIDTH;
+    public static float WIDTH = 1920/(2f * 10);
+    public static float HEIGHT = 1080/(2f * 10);
     public OrthographicCamera camera;
+
+    public static float SCREEN_WIDTH;
+    public static float SCREEN_HEIGHT;
+
+    OrthographicCamera hudCamera = new OrthographicCamera();
 
     public static boolean isJoysticStatic = false;
 
@@ -31,11 +38,14 @@ public class MyGdxGame extends Game {
     public void create() {
         WIDTH = Gdx.graphics.getWidth();
         HEIGHT = Gdx.graphics.getHeight();
+        SCREEN_WIDTH = Gdx.graphics.getWidth();
+        SCREEN_HEIGHT = Gdx.graphics.getHeight();
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
         introScreen = new IntroScreen(this, batch, camera);
-        testMapScreen = new TestMapScreen(this, batch, camera);
+        testMapScreen = new TestMapScreen(batch, camera, hudCamera);
         settingsScreen = new SettingsScreen(this, batch, camera);
         memeMenuScreen = new MemeMenuScreen(this, batch, camera);
         leftBottomPointCamera.set(
