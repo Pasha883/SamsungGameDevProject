@@ -5,16 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class MenuScreen implements Screen {
     private long startMillis = 0;
@@ -137,13 +133,13 @@ public class MenuScreen implements Screen {
         if (lang == 1) {
             batch.draw(menuTitleENGShad,
                     camera.position.x - menuTitleENG.getWidth() * 2 + 25,
-                    Gdx.graphics.getHeight() - 425,
+                    Gdx.graphics.getHeight() - 475,
                     menuTitleENG.getWidth() * 4,
                     menuTitleENG.getHeight() * 4);
 
             batch.draw(menuTitleENG,
             camera.position.x - menuTitleENG.getWidth() * 2,
-            Gdx.graphics.getHeight() - 400,
+            Gdx.graphics.getHeight() - 450,
             menuTitleENG.getWidth() * 4,
             menuTitleENG.getHeight() * 4);
 
@@ -158,7 +154,9 @@ public class MenuScreen implements Screen {
                         600,
                         200);
                 click.play();
-                myGdxGame.setScreen(myGdxGame.testMapScreen);
+                MyGdxGame.WIDTH = MyGdxGame.SCREEN_WIDTH/(2f * 10);
+                MyGdxGame.HEIGHT = MyGdxGame.SCREEN_HEIGHT / (2f * 10);
+                myGdxGame.setScreen(myGdxGame.gameScreen);
             }
             if (settingsENG.isHit()) {
                 batch.draw(settings02ENG,
@@ -201,7 +199,9 @@ public class MenuScreen implements Screen {
                         600,
                         200);
                 click.play();
-                myGdxGame.setScreen(myGdxGame.testMapScreen);
+                MyGdxGame.WIDTH = 2316/(2f * 10);
+                MyGdxGame.HEIGHT = 1080 / (2f * 10);
+                myGdxGame.setScreen(myGdxGame.gameScreen);
             }
             if (settingsRUS.isHit()){
                 batch.draw(settings02RUS,

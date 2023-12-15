@@ -2,6 +2,7 @@ package com.maxadventure.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,12 +18,12 @@ public class MyGdxGame extends Game {
     public static float SCREEN_WIDTH;
     public static float SCREEN_HEIGHT;
 
-    OrthographicCamera hudCamera = new OrthographicCamera();
+    public OrthographicCamera hudCamera = new OrthographicCamera();
 
     public static boolean isJoysticStatic = false;
 
     public IntroScreen introScreen;
-    public TestMapScreen testMapScreen;
+    public GameScreen gameScreen;
     public MenuScreen menuScreen;
     public SettingsScreen settingsScreen;
     public MemeMenuScreen memeMenuScreen;
@@ -32,6 +33,14 @@ public class MyGdxGame extends Game {
     public static int language = 1;
 
     Texture img;
+
+    public static MyGdxGame instance;
+    public static InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+    public MyGdxGame(){
+        super();
+        instance = this;
+    }
 
 
     @Override
@@ -45,7 +54,7 @@ public class MyGdxGame extends Game {
         hudCamera.setToOrtho(false, WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
         introScreen = new IntroScreen(this, batch, camera);
-        testMapScreen = new TestMapScreen(batch, camera, hudCamera);
+        gameScreen = new GameScreen(batch, camera, hudCamera, this);
         settingsScreen = new SettingsScreen(this, batch, camera);
         memeMenuScreen = new MemeMenuScreen(this, batch, camera);
         leftBottomPointCamera.set(
@@ -55,6 +64,7 @@ public class MyGdxGame extends Game {
 
         menuScreen = new MenuScreen(this, batch, camera);
         setScreen(introScreen);
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
 
