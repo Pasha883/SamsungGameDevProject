@@ -16,7 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import java.util.Random;
 
 public class Enemy {
-    Sound bruh, huh;
+    Sound bruh, huh, q;
     private boolean playerContact = false;
     private World world;
     private Body body;
@@ -25,11 +25,13 @@ public class Enemy {
 
     public boolean isAlive = true;
 
+
     public Enemy(World world, float x, float y) {
         this.world = world;
 
         bruh = Gdx.audio.newSound(Gdx.files.internal("TMS/bruh.mp3"));
         huh = Gdx.audio.newSound(Gdx.files.internal("TMS/huh.mp3"));
+        q = Gdx.audio.newSound(Gdx.files.internal("Q.mp3"));
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -85,7 +87,7 @@ public class Enemy {
 
     public void handleCollision(Player player) {
         if (isAlive == true && player.isInvease() == false){
-            huh.play();
+            q.play();
         }
 
         //System.out.println("Enemy collided!");

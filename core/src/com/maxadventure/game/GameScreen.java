@@ -3,6 +3,7 @@ package com.maxadventure.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -64,7 +65,10 @@ public class GameScreen implements Screen {
     private Texture sky, rock1, rock2, clouds1, clouds2, clouds3, clouds4;
     private Texture first, second, third;
     private final HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
+    private Music musicG = Gdx.audio.newMusic(Gdx.files.internal("Game.wav"));
     Texture deleteLater;
+
+    Sound j, s, c;
 
     List<Body> ground = new ArrayList<>();
     List<Body> coins = new ArrayList<>();
@@ -87,6 +91,10 @@ public class GameScreen implements Screen {
 
         bruh = Gdx.audio.newSound(Gdx.files.internal("TMS/bruh.mp3"));
         huh = Gdx.audio.newSound(Gdx.files.internal("TMS/huh.mp3"));
+
+        j = Gdx.audio.newSound(Gdx.files.internal("J.mp3"));
+        s = Gdx.audio.newSound(Gdx.files.internal("S.mp3"));
+        c = Gdx.audio.newSound(Gdx.files.internal("Coin.mp3"));
 
         gameViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH/(2f * 10), MyGdxGame.SCREEN_HEIGHT/(2f * 10), camera);
         hudViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH/(2f * 10), MyGdxGame.SCREEN_HEIGHT/(2f * 10), hudCamera);
@@ -117,6 +125,7 @@ public class GameScreen implements Screen {
                     if(world != null) {
                         coins.remove(contact.getFixtureA().getBody());
                         bodyForDelete.add(contact.getFixtureA().getBody());
+                        c.play();
                     }
                 if(contact.getFixtureB().getBody() == player.body && contact.getFixtureA().getBody() == enemy.getBody()){
                     enemy.handleCollision(player);
@@ -194,6 +203,7 @@ public class GameScreen implements Screen {
                     player.body.applyLinearImpulse(new Vector2(0, 700000),
                             player.body.getPosition(), true);
                     player.setJumpCounter(jumpCounter + 1);
+                    j.play();
                 }
             }
         });
@@ -204,6 +214,7 @@ public class GameScreen implements Screen {
                 if (player.getAttack() == false){
                     Body body = enemy.getBody();
                     player.setAttack(true);
+                    s.play();
                     player.setStartAttack(TimeUtils.millis());
                     if (body.getPosition().x < player.body.getPosition().x + 20 &&
                             player.body.getPosition().x < body.getPosition().x && player.getDirect() == 1){
@@ -303,6 +314,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        musicG.play();
         startMills = TimeUtils.millis();
         initBackground();
         //resize((int) MyGdxGame.WIDTH, (int) MyGdxGame.HEIGHT);
@@ -399,7 +411,7 @@ public class GameScreen implements Screen {
         batch.end();
 
         //Отвечает за отрисовку границ rectangle
-        b2dr.render(world, camera.combined);
+        //b2dr.render(world, camera.combined);
 
         hudStage.act(delta);
         hudStage.draw();

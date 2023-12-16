@@ -2,6 +2,7 @@ package com.maxadventure.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -40,6 +41,8 @@ public class MenuScreen implements Screen {
     private Texture B3L1, B3L2, B3L3, B3L4, B3L5, B3L6;
     private Texture B2L1, B2L2, B2L3, B2L4;
     private Texture B1L1, B1L2, B1L3, B1L4, B1l5, B1L6;
+
+    private Music musicM = Gdx.audio.newMusic(Gdx.files.internal("Menu.wav"));
 
     private Texture play01ENG, play02ENG, play01RUS, play02RUS;
     private Texture settings01ENG, settings02ENG, settings01RUS, settings02RUS;
@@ -113,6 +116,7 @@ public class MenuScreen implements Screen {
         this.lang = MyGdxGame.language;
         isStarted = false;
         counter = 0;
+        musicM.play();
     }
 
     @Override
@@ -157,6 +161,7 @@ public class MenuScreen implements Screen {
                 MyGdxGame.WIDTH = MyGdxGame.SCREEN_WIDTH/(2f * 10);
                 MyGdxGame.HEIGHT = MyGdxGame.SCREEN_HEIGHT / (2f * 10);
                 myGdxGame.setScreen(myGdxGame.gameScreen);
+                musicM.stop();
             }
             if (settingsENG.isHit()) {
                 batch.draw(settings02ENG,
@@ -202,6 +207,7 @@ public class MenuScreen implements Screen {
                 MyGdxGame.WIDTH = 2316/(2f * 10);
                 MyGdxGame.HEIGHT = 1080 / (2f * 10);
                 myGdxGame.setScreen(myGdxGame.gameScreen);
+                musicM.stop();
             }
             if (settingsRUS.isHit()){
                 batch.draw(settings02RUS,
