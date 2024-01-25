@@ -18,7 +18,7 @@ public class MenuScreen implements Screen {
     private int counter = 0;
     private boolean isStarted = false;
 
-    private  MyGdxGame myGdxGame;
+    private MyGdxGame myGdxGame;
     private final SpriteBatch batch;
     private OrthographicCamera camera;
 
@@ -77,21 +77,68 @@ public class MenuScreen implements Screen {
         this.batch = batch;
         this.camera = camera;
         this.myGdxGame = myGdxGame;
+        System.out.println(Gdx.graphics.getWidth());
+        System.out.println(Gdx.graphics.getHeight());
+        playENG = new Button(
+                play01ENG,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (620 / 1440f * Gdx.graphics.getHeight())
+                )
+        );
+        playRUS = new Button(
+                play01RUS,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (620 / 1440f * Gdx.graphics.getHeight())
+                )
+        );
 
-        playENG = new Button(play01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
-        playRUS = new Button(play01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 100));
+        settingsENG = new Button(
+                settings01ENG,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (420 / 1440f * Gdx.graphics.getHeight())
+                )
+        );
+        settingsRUS = new Button(
+                settings01RUS,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (420 / 1440f * Gdx.graphics.getHeight())
+                )
+        );
 
-        settingsENG = new Button(settings01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
-        settingsRUS = new Button(settings01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 300));
-
-        aboutENG = new Button(about01ENG, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
-        aboutRUS = new Button(about01RUS, batch,
-                600, 200, new Vector2(Gdx.graphics.getWidth() / 2 - 300, Gdx.graphics.getHeight() / 2 - 500));
+        aboutENG = new Button(
+                about01ENG,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (220 / 1440f * Gdx.graphics.getHeight())
+                )
+        );
+        aboutRUS = new Button(about01RUS,
+                batch,
+                (int) ((600 / 2984f) * Gdx.graphics.getWidth()),
+                (int) ((200 / 1440f) * Gdx.graphics.getHeight()),
+                new Vector2(
+                        (int) (1192 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (220 / 1440f * Gdx.graphics.getHeight())
+                ));
 
         initializateBackground1();
         initializateBackground2();
@@ -106,7 +153,7 @@ public class MenuScreen implements Screen {
         initializeMenuElementsENG();
 
         secBut = new Button(secBUT, batch, (int) (menuTitleENG.getWidth() * 4),
-                (int)(menuTitleENG.getHeight() * 4), new Vector2 (
+                (int) (menuTitleENG.getHeight() * 4), new Vector2(
                 camera.position.x - menuTitleENG.getWidth() * 2,
                 Gdx.graphics.getHeight() - 400));
     }
@@ -121,13 +168,13 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if (TimeUtils.millis() - startMillis > 5000 && isStarted == true){
+        if (TimeUtils.millis() - startMillis > 5000 && isStarted == true) {
             myGdxGame.setScreen(myGdxGame.memeMenuScreen);
         }
         lang = MyGdxGame.language;
         MyGdxGame.leftBottomPointCamera.set(
-                (int)(camera.position.x) - MyGdxGame.WIDTH/2,
-                (int)(camera.position.y) - MyGdxGame.HEIGHT/2
+                (int) (camera.position.x) - MyGdxGame.WIDTH / 2,
+                (int) (camera.position.y) - MyGdxGame.HEIGHT / 2
         );
         camera.position.add(3, 0, 0);
         ScreenUtils.clear(1, 1, 1, 1);
@@ -136,29 +183,29 @@ public class MenuScreen implements Screen {
         chooseBackground(delta);
         if (lang == 1) {
             batch.draw(menuTitleENGShad,
-                    camera.position.x - menuTitleENG.getWidth() * 2 + 25,
-                    Gdx.graphics.getHeight() - 475,
-                    menuTitleENG.getWidth() * 4,
-                    menuTitleENG.getHeight() * 4);
+                    camera.position.x - 440 / 2982f * Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight() - (1000 / 440f)/1440f*Gdx.graphics.getHeight() *  (324 / 1440f * Gdx.graphics.getHeight()),
+                    880 / 2982f * Gdx.graphics.getWidth(),
+                    324 / 1440f * Gdx.graphics.getHeight());
 
             batch.draw(menuTitleENG,
-            camera.position.x - menuTitleENG.getWidth() * 2,
-            Gdx.graphics.getHeight() - 450,
-            menuTitleENG.getWidth() * 4,
-            menuTitleENG.getHeight() * 4);
+                    camera.position.x - 460 / 2982f * Gdx.graphics.getWidth(),
+                    Gdx.graphics.getHeight() - (960 / 440f)/1440f*Gdx.graphics.getHeight() *  (324 / 1440f * Gdx.graphics.getHeight()),
+                    880 / 2982f * Gdx.graphics.getWidth(),
+                    324 / 1440f * Gdx.graphics.getHeight());
 
             playENG.draw();
             settingsENG.draw();
             aboutENG.draw();
 
-            if (playENG.isHit()){
+            if (playENG.isHit()) {
                 batch.draw(play02ENG,
                         camera.position.x - 300,
                         Gdx.graphics.getHeight() / 2 - 100,
                         600,
                         200);
                 click.play();
-                MyGdxGame.WIDTH = MyGdxGame.SCREEN_WIDTH/(2f * 10);
+                MyGdxGame.WIDTH = MyGdxGame.SCREEN_WIDTH / (2f * 10);
                 MyGdxGame.HEIGHT = MyGdxGame.SCREEN_HEIGHT / (2f * 10);
                 myGdxGame.setScreen(myGdxGame.gameScreen);
                 musicM.stop();
@@ -197,19 +244,19 @@ public class MenuScreen implements Screen {
             settingsRUS.draw();
             aboutRUS.draw();
 
-            if (playRUS.isHit()){
+            if (playRUS.isHit()) {
                 batch.draw(play02RUS,
                         camera.position.x - 300,
                         Gdx.graphics.getHeight() / 2 - 100,
                         600,
                         200);
                 click.play();
-                MyGdxGame.WIDTH = 2316/(2f * 10);
+                MyGdxGame.WIDTH = 2316 / (2f * 10);
                 MyGdxGame.HEIGHT = 1080 / (2f * 10);
                 myGdxGame.setScreen(myGdxGame.gameScreen);
                 musicM.stop();
             }
-            if (settingsRUS.isHit()){
+            if (settingsRUS.isHit()) {
                 batch.draw(settings02RUS,
                         camera.position.x - 300,
                         Gdx.graphics.getHeight() / 2 - 300,
@@ -218,7 +265,7 @@ public class MenuScreen implements Screen {
                 click.play();
                 myGdxGame.setScreen(myGdxGame.settingsScreen);
             }
-            if (aboutRUS.isHit()){
+            if (aboutRUS.isHit()) {
                 batch.draw(about02RUS,
                         camera.position.x - 300,
                         Gdx.graphics.getHeight() / 2 - 500,
@@ -227,7 +274,7 @@ public class MenuScreen implements Screen {
                 click.play();
             }
         }
-        if (secBut.isHit()){
+        if (secBut.isHit()) {
             if (counter < 5) {
                 huh.play();
                 counter += 1;
@@ -267,19 +314,19 @@ public class MenuScreen implements Screen {
 
     }
 
-    public long findTime(){
+    public long findTime() {
         long time = TimeUtils.millis();
         long seconds = (long) (time / 1000);
         long minutes = seconds / 60;
         long hours = minutes / 60;
         long now = hours % 24 + 3;
-        if (now >= 24){
+        if (now >= 24) {
             now = now % 24;
         }
         return now;
     }
 
-    public void chooseBackground(float delta){
+    public void chooseBackground(float delta) {
         long now = findTime();
         if (now >= 0 && now < 7) {
             renderBackground3(delta);
@@ -300,17 +347,17 @@ public class MenuScreen implements Screen {
         }
     }
 
-    public void initializeMenuElementsRUS(){
+    public void initializeMenuElementsRUS() {
         menuTitleRUS = new Texture("MenuAssets/RUS/TitleMenu.png");
         menuTitleRUSShad = new Texture("MenuAssets/RUS/TitleMenuShad.png");
     }
 
-    public void initializeMenuElementsENG(){
+    public void initializeMenuElementsENG() {
         menuTitleENG = new Texture("MenuAssets/ENG/TitleENG.png");
         menuTitleENGShad = new Texture("MenuAssets/ENG/TitleENGShad.png");
     }
 
-    public void initializateBackground1(){
+    public void initializateBackground1() {
         B8L4 = new Texture("MenuBackground1/1.png");
         B8L3 = new Texture("MenuBackground1/2.png");
         B8L2 = new Texture("MenuBackground1/3.png");
@@ -323,7 +370,7 @@ public class MenuScreen implements Screen {
         parallaxBg1.put("B8L4", new BackgroundCircle(B8L4, batch, camera, 0.07f));
     }
 
-    public void initializateBackground2(){
+    public void initializateBackground2() {
         B7L4 = new Texture("MenuBackground2/1.png");
         B7L3 = new Texture("MenuBackground2/2.png");
         B7L2 = new Texture("MenuBackground2/3.png");
@@ -336,7 +383,7 @@ public class MenuScreen implements Screen {
         parallaxBg2.put("B7L4", new BackgroundCircle(B7L4, batch, camera, 0.07f));
     }
 
-    public void initializateBackground3(){
+    public void initializateBackground3() {
         B6L4 = new Texture("MenuBackground3/1.png");
         B6L3 = new Texture("MenuBackground3/2.png");
         B6L2 = new Texture("MenuBackground3/3.png");
@@ -349,7 +396,7 @@ public class MenuScreen implements Screen {
         parallaxBg3.put("B6L4", new BackgroundCircle(B6L4, batch, camera, 0.07f));
     }
 
-    public void initializateBackground4(){
+    public void initializateBackground4() {
         B5L4 = new Texture("MenuBackground4/1.png");
         B5L3 = new Texture("MenuBackground4/2.png");
         B5L2 = new Texture("MenuBackground4/3.png");
@@ -362,7 +409,7 @@ public class MenuScreen implements Screen {
         parallaxBg4.put("B5L4", new BackgroundCircle(B5L4, batch, camera, 0.07f));
     }
 
-    public void initializateBackground5(){
+    public void initializateBackground5() {
         B4L5 = new Texture("MenuBackground5/1.png");
         B4L4 = new Texture("MenuBackground5/2.png");
         B4L3 = new Texture("MenuBackground5/3.png");
@@ -377,7 +424,7 @@ public class MenuScreen implements Screen {
         parallaxBg5.put("B4L5", new BackgroundCircle(B4L5, batch, camera, 0.07f));
     }
 
-    public void initializateBackground6(){
+    public void initializateBackground6() {
         B3L6 = new Texture("MenuBackground6/1.png");
         B3L5 = new Texture("MenuBackground6/2.png");
         B3L4 = new Texture("MenuBackground6/3.png");
@@ -394,7 +441,7 @@ public class MenuScreen implements Screen {
         parallaxBg6.put("B3L6", new BackgroundCircle(B3L6, batch, camera, 0.07f));
     }
 
-    public void initializateBackground7(){
+    public void initializateBackground7() {
         B2L4 = new Texture("MenuBackground7/1.png");
         B2L3 = new Texture("MenuBackground7/2.png");
         B2L2 = new Texture("MenuBackground7/3.png");
@@ -407,7 +454,7 @@ public class MenuScreen implements Screen {
         parallaxBg7.put("B2L4", new BackgroundCircle(B2L4, batch, camera, 0.07f));
     }
 
-    public void initializateBackground8(){
+    public void initializateBackground8() {
         B1L6 = new Texture("MenuBackground8/1.png");
         B1l5 = new Texture("MenuBackground8/2.png");
         B1L4 = new Texture("MenuBackground8/3.png");
@@ -423,49 +470,50 @@ public class MenuScreen implements Screen {
         parallaxBg8.put("B1L6", new BackgroundCircle(B1L6, batch, camera, 0.1f));
     }
 
-    public void renderBackground1(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg1.values()){
-            bgCircle.render(delta);
-        }
-    }
-    public void renderBackground2(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg2.values()){
+    public void renderBackground1(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg1.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground3(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg3.values()){
+    public void renderBackground2(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg2.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground4(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg4.values()){
+    public void renderBackground3(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg3.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground5(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg5.values()){
+    public void renderBackground4(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg4.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground6(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg6.values()){
+    public void renderBackground5(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg5.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground7(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg7.values()){
+    public void renderBackground6(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg6.values()) {
             bgCircle.render(delta);
         }
     }
 
-    public void renderBackground8(float delta){
-        for (BackgroundCircle bgCircle : parallaxBg8.values()){
+    public void renderBackground7(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg7.values()) {
+            bgCircle.render(delta);
+        }
+    }
+
+    public void renderBackground8(float delta) {
+        for (BackgroundCircle bgCircle : parallaxBg8.values()) {
             bgCircle.render(delta);
         }
     }

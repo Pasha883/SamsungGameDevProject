@@ -63,7 +63,7 @@ public class MyGdxGame extends Game {
         );
 
         menuScreen = new MenuScreen(this, batch, camera);
-        setScreen(introScreen);
+        setScreen(menuScreen);
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
