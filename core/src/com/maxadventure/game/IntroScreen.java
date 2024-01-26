@@ -32,6 +32,7 @@ public class IntroScreen implements Screen {
                 myGdxGame.setScreen(myGdxGame.menuScreen);
             }
         });
+        System.out.println("Длина"+Gdx.graphics.getWidth());
 
     }
 
@@ -40,7 +41,7 @@ public class IntroScreen implements Screen {
         try {
             videoPlayer.play(Gdx.files.internal("Intro.webm"));
         } catch (FileNotFoundException e){
-            ScreenUtils.clear(1, 1, 1, 1);
+            ScreenUtils.clear(0,0,0, 1);
             batch.begin();
             batch.draw(tex, 0,0);
             batch.end();
