@@ -47,11 +47,17 @@ public class SettingsScreen implements Screen {
 
     private Texture JMTENG, LTENG, NSTENG, STENG, SeTENG;
     private Texture JMTRUS, LTRUS, NSTRUS, STRUS, SeTRUS;
+    private Texture allEngDin, allEngStat, allRusStat, allRusDin;
     private Sound click;
     private Sprite BLMM;
 
     public SettingsScreen(MyGdxGame myGdxGame, SpriteBatch batch, OrthographicCamera camera) {
         click = Gdx.audio.newSound(Gdx.files.internal("Sounds/Click.mp3"));
+
+        allEngDin = new Texture("SettingsScreenAssets/Assets/ENG/allEngDin.png");
+        allEngStat = new Texture("SettingsScreenAssets/Assets/ENG/allEngStat.png");
+        allRusStat = new Texture("SettingsScreenAssets/Assets/RUS/allRusStat.png");
+        allRusDin = new Texture("SettingsScreenAssets/Assets/RUS/allRusDin.png");
 
         ENG01 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng01.png");
         ENG02 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng02.png");
@@ -181,6 +187,7 @@ public class SettingsScreen implements Screen {
 
         initializeMenuElementsRUS();
         initializeMenuElementsENG();
+
     }
 
     @Override
@@ -204,92 +211,97 @@ public class SettingsScreen implements Screen {
         batch.begin();
         chooseBackground(delta);
         BLMM.draw(batch);
-        batch.draw(SeTENG,
-                (int) (camera.position.x - SeTENG.getWidth() * 1.5),
-                Gdx.graphics.getHeight() - 100,
-                SeTENG.getWidth() * 3,
-                SeTENG.getHeight() * 3);
-
-        batch.draw(LTENG,
-                (int) (camera.position.x - LTENG.getWidth() * 1.5),
-                Gdx.graphics.getHeight() - 260,
-                LTENG.getWidth() * 3,
-                LTENG.getHeight() * 3);
-
-        batch.draw(JMTENG,
-                (int) (camera.position.x - JMTENG.getWidth() * 1.5),
-                Gdx.graphics.getHeight() - 600,
-                JMTENG.getWidth() * 3,
-                JMTENG.getHeight() * 3);
         if (lang == 1) {
-            batch.draw(SeTENG,
-                    (int) (camera.position.x - SeTENG.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 100,
-                    SeTENG.getWidth() * 3,
-                    SeTENG.getHeight() * 3);
 
-            batch.draw(LTENG,
-                    (int) (camera.position.x - LTENG.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 260,
-                    LTENG.getWidth() * 3,
-                    LTENG.getHeight() * 3);
-
-            batch.draw(JMTENG,
-                    (int) (camera.position.x - JMTENG.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 600,
-                    JMTENG.getWidth() * 3,
-                    JMTENG.getHeight() * 3);
+//            batch.draw(SeTENG,
+//                    (int) (camera.position.x - (SeTENG.getWidth() * (2.7f / 1280) * Gdx.graphics.getWidth()) / 2f),
+//                    Gdx.graphics.getHeight() - (SeTENG.getHeight() * 2.7f / 720 * Gdx.graphics.getHeight()) *
+//                            (3.3f / 1440 * Gdx.graphics.getHeight()),
+//                    SeTENG.getWidth() * 2.7f / 1280 * Gdx.graphics.getWidth(),
+//                    SeTENG.getHeight() * 2.7f / 720 * Gdx.graphics.getHeight()
+//            );
+//
+//            batch.draw(LTENG,
+//                    (int) (camera.position.x - (LTENG.getWidth() * 2 / 1280f * Gdx.graphics.getWidth()) * 1.75),
+//                    Gdx.graphics.getHeight() - (LTENG.getHeight() * 2 / 720f * Gdx.graphics.getHeight())*
+//                            (9f / 1440 * Gdx.graphics.getHeight()),
+//                    LTENG.getWidth() * 2 / 1280f * Gdx.graphics.getWidth(),
+//                    LTENG.getHeight() * 2 / 720f * Gdx.graphics.getHeight());
+//Ф
+//            batch.draw(JMTENG,
+//                    (int) (camera.position.x - (JMTENG.getWidth() * 2 / 1280f * Gdx.graphics.getWidth()) / 0.75f),
+//                    Gdx.graphics.getHeight() - 470 / 1280f * Gdx.graphics.getWidth(),
+//                    JMTENG.getWidth() * 2 / 1280f * Gdx.graphics.getWidth(),
+//                    JMTENG.getHeight() * 2 / 720f * Gdx.graphics.getHeight());
             ENG.draw();
             if (isStat == true) {
                 staticENG.draw();
-                batch.draw(STENG,
-                        (int) (camera.position.x - STENG.getWidth() * 1),
-                        Gdx.graphics.getHeight() - 960,
-                        STENG.getWidth() * 2,
-                        STENG.getHeight() * 2);
+                batch.draw(allEngStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(),
+                        Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+//                batch.draw(STENG,
+//                        (int) (camera.position.x - STENG.getWidth() * 1),
+//                        Gdx.graphics.getHeight() - 960,
+//                        STENG.getWidth() * 2,
+//                        STENG.getHeight() * 2);
             } else if (isStat == false) {
                 dynamENG.draw();
-                batch.draw(NSTENG,
-                        (int) (camera.position.x - NSTENG.getWidth() * 1),
-                        Gdx.graphics.getHeight() - 880,
-                        NSTENG.getWidth() * 2,
-                        NSTENG.getHeight() * 2);
+                batch.draw(allEngDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(),
+                        Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//                batch.draw(NSTENG,
+//                        (int) (camera.position.x - NSTENG.getWidth() * 1),
+//                        Gdx.graphics.getHeight() - 880,
+//                        NSTENG.getWidth() * 2,
+//                        NSTENG.getHeight() * 2);
             }
 
             backENG.draw();
         } else if (lang == 2) {
-            batch.draw(SeTRUS,
-                    (int) (camera.position.x - SeTRUS.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 100,
-                    SeTRUS.getWidth() * 3,
-                    SeTRUS.getHeight() * 3);
 
-            batch.draw(LTRUS,
-                    (int) (camera.position.x - LTRUS.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 260,
-                    LTRUS.getWidth() * 3,
-                    LTENG.getHeight() * 3);
-
-            batch.draw(JMTRUS,
-                    (int) (camera.position.x - JMTRUS.getWidth() * 1.5),
-                    Gdx.graphics.getHeight() - 600,
-                    JMTRUS.getWidth() * 3,
-                    JMTRUS.getHeight() * 3);
+//            batch.draw(SeTRUS,
+//                    (int) (camera.position.x - SeTRUS.getWidth() * 1.5),
+//                    Gdx.graphics.getHeight() - 100,
+//                    SeTRUS.getWidth() * 3,
+//                    SeTRUS.getHeight() * 3);
+//
+//            batch.draw(LTRUS,
+//                    (int) (camera.position.x - LTRUS.getWidth() * 1.5),
+//                    Gdx.graphics.getHeight() - 260,
+//                    LTRUS.getWidth() * 3,
+//                    LTENG.getHeight() * 3);
+//
+//            batch.draw(JMTRUS,
+//                    (int) (camera.position.x - JMTRUS.getWidth() * 1.5),
+//                    Gdx.graphics.getHeight() - 600,
+//                    JMTRUS.getWidth() * 3,
+//                    JMTRUS.getHeight() * 3);
             RUS.draw();
             if (isStat == true) {
                 staticRUS.draw();
-                batch.draw(STRUS,
-                        (int) (camera.position.x - STRUS.getWidth() * 1),
-                        Gdx.graphics.getHeight() - 960,
-                        STRUS.getWidth() * 2,
-                        STRUS.getHeight() * 2);
+                batch.draw(allRusStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight());
+//                batch.draw(STRUS,
+//                        (int) (camera.position.x - STRUS.getWidth() * 1),
+//                        Gdx.graphics.getHeight() - 960,
+//                        STRUS.getWidth() * 2,
+//                        STRUS.getHeight() * 2);
             } else if (isStat == false) {
                 dynamRUS.draw();
-                batch.draw(NSTRUS,
-                        (int) (camera.position.x - NSTRUS.getWidth() * 1),
-                        Gdx.graphics.getHeight() - 880,
-                        NSTRUS.getWidth() * 2,
-                        NSTRUS.getHeight() * 2);
+                batch.draw(allRusDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight());
+//                batch.draw(NSTRUS,
+//                        (int) (camera.position.x - NSTRUS.getWidth() * 1),
+//                        Gdx.graphics.getHeight() - 880,
+//                        NSTRUS.getWidth() * 2,
+//                        NSTRUS.getHeight() * 2);
             }
 
             backRUS.draw();
