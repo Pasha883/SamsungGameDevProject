@@ -38,6 +38,9 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import java.time.Duration;
+import java.time.Instant;
+
 import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
@@ -66,6 +69,8 @@ public class GameScreen implements Screen {
     private Texture first, second, third;
     private final HashMap<String, BackgroundCircle> parallaxBg = new HashMap<>();
     private Music musicG = Gdx.audio.newMusic(Gdx.files.internal("Game.wav"));
+
+    private long startTime = TimeUtils.millis(), startTouchTime = TimeUtils.millis();
     Texture deleteLater;
 
     Sound j, s, c;
@@ -76,6 +81,7 @@ public class GameScreen implements Screen {
     List<Body> bodyForDelete = new ArrayList<>();
     private TiledMapTileLayer coinLayer;
     private Enemy enemy;
+    private boolean canMove = true;
     Sound bruh, huh;
 
     int direction = -1;
@@ -96,8 +102,8 @@ public class GameScreen implements Screen {
         s = Gdx.audio.newSound(Gdx.files.internal("S.mp3"));
         c = Gdx.audio.newSound(Gdx.files.internal("Coin.mp3"));
 
-        gameViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH/(2f * 10), MyGdxGame.SCREEN_HEIGHT/(2f * 10), camera);
-        hudViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH/(2f * 10), MyGdxGame.SCREEN_HEIGHT/(2f * 10), hudCamera);
+        gameViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH / (2f * 10), MyGdxGame.SCREEN_HEIGHT / (2f * 10), camera);
+        hudViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH / (2f * 10), MyGdxGame.SCREEN_HEIGHT / (2f * 10), hudCamera);
         hudStage = new Stage(hudViewport, batch);
 
         Drawable active_button1 = new TextureRegionDrawable(new Texture("blue-A-pushed.png"));
@@ -106,7 +112,7 @@ public class GameScreen implements Screen {
         Drawable active_button2 = new TextureRegionDrawable(new Texture("blue-B-pushed.png"));
         Drawable none_active_button2 = new TextureRegionDrawable(new Texture("blue-B.png"));
 
-        deleteLater= new Texture("badlogic.jpg");
+        deleteLater = new Texture("badlogic.jpg");
         tmxMapLoader = new TmxMapLoader();
         map = tmxMapLoader.load("TMS/jo.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, unitScale, batch);
@@ -121,21 +127,31 @@ public class GameScreen implements Screen {
         world.setContactListener(new ContactListener() {
             @Override
             public void beginContact(Contact contact) {
-                if(contact.getFixtureB().getBody() == player.body && coins.contains(contact.getFixtureA().getBody()))
-                    if(world != null) {
+                if (contact.getFixtureB().getBody() == player.body && coins.contains(contact.getFixtureA().getBody()))
+                    if (world != null) {
                         coins.remove(contact.getFixtureA().getBody());
                         bodyForDelete.add(contact.getFixtureA().getBody());
                         c.play();
                     }
-                if(contact.getFixtureB().getBody() == player.body && contact.getFixtureA().getBody() == enemy.getBody()){
-                    enemy.handleCollision(player);
-                    if(player.isInvease() == false)
-                        player.startInvease();
-                } else if(contact.getFixtureA().getBody() == player.body && contact.getFixtureB().getBody() == enemy.getBody()){
+                if (contact.getFixtureB().getBody() == player.body && contact.getFixtureA().getBody() == enemy.getBody()) {
                     enemy.handleCollision(player);
                     if (player.isInvease() == false)
                         player.startInvease();
-                } if (contact.getFixtureB().getBody() == player.body &&  ground.contains(contact.getFixtureA().getBody()))
+
+                } else if (contact.getFixtureA().getBody() == player.body && contact.getFixtureB().getBody() == enemy.getBody()) {
+                    enemy.handleCollision(player);
+//                    System.out.println((TimeUtils.millis() - startTime) + "сек");
+                    if ((TimeUtils.millis() - startTouchTime) / 1000f > 1 && enemy.isAlive) {
+//                        System.out.println("время пошло");
+                        startTime = TimeUtils.millis();
+                        startTouchTime = TimeUtils.millis();
+//                        canMove=!canMove;
+                    }
+//                    System.out.println("elsfme;wf");
+                    if (!player.isInvease())
+                        player.startInvease();
+                }
+                if (contact.getFixtureB().getBody() == player.body && ground.contains(contact.getFixtureA().getBody()))
                     player.setJumpCounter(0);
             }
 
@@ -161,17 +177,17 @@ public class GameScreen implements Screen {
 
         b2dr = new Box2DDebugRenderer();
 
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Body body;
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rect.x + rect.getWidth()/2) * unitScale,
-                    (rect.y + rect.getHeight()/2) * unitScale);
+            bodyDef.position.set((rect.x + rect.getWidth() / 2) * unitScale,
+                    (rect.y + rect.getHeight() / 2) * unitScale);
 
             body = world.createBody(bodyDef);
 
-            shape.setAsBox(rect.getWidth()/2*unitScale, rect.getHeight()/2*unitScale);
+            shape.setAsBox(rect.getWidth() / 2 * unitScale, rect.getHeight() / 2 * unitScale);
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
 
@@ -190,10 +206,10 @@ public class GameScreen implements Screen {
                 new Texture("fgStick.png"), 20, 6);
         hudStage.addActor(joystick);
         Button button = new Button(none_active_button1, active_button1);
-        button.setPosition( 75,5);
+        button.setPosition(75, 5);
 
         Button button2 = new Button(none_active_button2, active_button2);
-        button2.setPosition(90,20);
+        button2.setPosition(90, 20);
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -211,17 +227,17 @@ public class GameScreen implements Screen {
         button2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (player.getAttack() == false){
+                if (player.getAttack() == false) {
                     Body body = enemy.getBody();
                     player.setAttack(true);
                     s.play();
                     player.setStartAttack(TimeUtils.millis());
                     if (body.getPosition().x < player.body.getPosition().x + 20 &&
-                            player.body.getPosition().x < body.getPosition().x && player.getDirect() == 1){
+                            player.body.getPosition().x < body.getPosition().x && player.getDirect() == 1) {
                         huh.play();
                         enemy.isAlive = false;
                     } else if (body.getPosition().x > player.body.getPosition().x - 20 &&
-                            player.body.getPosition().x > body.getPosition().x && player.getDirect() == -1){
+                            player.body.getPosition().x > body.getPosition().x && player.getDirect() == -1) {
                         huh.play();
                         enemy.isAlive = false;
                     }
@@ -237,23 +253,27 @@ public class GameScreen implements Screen {
         hudStage.addActor(button);
         hudStage.addActor(button2);
         //initBackground();
-        enemy = new Enemy(world, player.body.getPosition().x - 10, player.body.getPosition().y);
+        enemy = new Enemy(this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
 
         MyGdxGame.inputMultiplexer.addProcessor(hudStage);
     }
 
+    public boolean getCanMove() {
+        return (TimeUtils.millis() - startTime) / 1000f > 3;
+    }
+
     private void initCoinsBody(BodyDef bodyDef, PolygonShape shape, FixtureDef fixtureDef) {
-        for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+        for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Body body;
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rect.x + rect.getWidth()/2) * unitScale,
-                    (rect.y + rect.getHeight()/2) * unitScale);
+            bodyDef.position.set((rect.x + rect.getWidth() / 2) * unitScale,
+                    (rect.y + rect.getHeight() / 2) * unitScale);
 
             body = world.createBody(bodyDef);
 
-            shape.setAsBox(rect.getWidth()/2*unitScale, rect.getHeight()/2*unitScale);
+            shape.setAsBox(rect.getWidth() / 2 * unitScale, rect.getHeight() / 2 * unitScale);
             fixtureDef.shape = shape;
             body.createFixture(fixtureDef);
 
@@ -270,25 +290,25 @@ public class GameScreen implements Screen {
         System.out.println("Player: " + player.body);
     }
 
-    private void correctCamera(){
+    private void correctCamera() {
         float cameraSpeed = 2f;
         float xDirection = player.body.getPosition().x - camera.position.x;
         float yDirection = player.body.getPosition().y - camera.position.y;
-        if(Math.abs(xDirection) > MyGdxGame.WIDTH/2 * 0.4f){
-            if(xDirection > 0)
+        if (Math.abs(xDirection) > MyGdxGame.WIDTH / 2 * 0.4f) {
+            if (xDirection > 0)
                 camera.position.add(cameraSpeed, 0, 0);
             else
                 camera.position.add(-cameraSpeed, 0, 0);
         }
-        if(Math.abs(yDirection) > MyGdxGame.HEIGHT/2 * 0.4f){
-            if(yDirection > 0)
+        if (Math.abs(yDirection) > MyGdxGame.HEIGHT / 2 * 0.4f) {
+            if (yDirection > 0)
                 camera.position.add(0, cameraSpeed, 0);
             else
                 camera.position.add(0, -cameraSpeed, 0);
         }
     }
 
-    public void renderBackground(float delta){
+    public void renderBackground(float delta) {
         for (BackgroundCircle bgCircle : parallaxBg.values()) {
             bgCircle.render(delta);
         }
@@ -324,47 +344,53 @@ public class GameScreen implements Screen {
     public void render(float delta) {
 
 
-        ScreenUtils.clear(1,1,1,1);
+        ScreenUtils.clear(1, 1, 1, 1);
         time += delta;
         updateTouch();
 
-        if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f) {
-            player.body.applyForceToCenter(new Vector2(3000, 0), true);
-            player.setDirect(1);
-        }
-        if (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f) {
-            player.body.applyForceToCenter(new Vector2(-3000, 0), true);
-            player.setDirect(-1);
-        }
+        System.out.println(((TimeUtils.millis() - startTime) / 1000f) + "секунд с удара прошло");
+        if ((TimeUtils.millis() - startTime) / 1000f > 3) {
+//            startTime = TimeUtils.millis();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.W)){
-            int jumpCounter = player.getJumpCounter();
-
-            if (jumpCounter < 2) {
-                player.body.applyLinearImpulse(new Vector2(0, 7000),
-                        player.body.getPosition(), true);
-                player.setJumpCounter(jumpCounter + 1);
+            if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f) {
+                player.body.applyForceToCenter(new Vector2(3000, 0), true);
+                player.setDirect(1);
             }
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            player.body.applyForceToCenter(new Vector2(3000, 0), true);
-            player.setDirect(1);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            player.body.applyForceToCenter(new Vector2(-3000, 0), true);
-            player.setDirect(-1);
-        }
+            if (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f) {
+                player.body.applyForceToCenter(new Vector2(-3000, 0), true);
+                player.setDirect(-1);
+            }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.L) && player.getAttack() == false){
+            if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+                int jumpCounter = player.getJumpCounter();
+
+                if (jumpCounter < 2) {
+                    player.body.applyLinearImpulse(new Vector2(0, 7000),
+                            player.body.getPosition(), true);
+                    player.setJumpCounter(jumpCounter + 1);
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                player.body.applyForceToCenter(new Vector2(3000, 0), true);
+                player.setDirect(1);
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                player.body.applyForceToCenter(new Vector2(-3000, 0), true);
+                player.setDirect(-1);
+            }
+
+
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L) && player.getAttack() == false) {
             Body body = enemy.getBody();
             player.setAttack(true);
             player.setStartAttack(TimeUtils.millis());
             if (body.getPosition().x < player.body.getPosition().x + 20 &&
-                    player.body.getPosition().x < body.getPosition().x && player.getDirect() == 1){
+                    player.body.getPosition().x < body.getPosition().x && player.getDirect() == 1) {
                 huh.play();
                 enemy.isAlive = false;
             } else if (body.getPosition().x > player.body.getPosition().x - 20 &&
-                    player.body.getPosition().x > body.getPosition().x && player.getDirect() == -1){
+                    player.body.getPosition().x > body.getPosition().x && player.getDirect() == -1) {
                 huh.play();
                 enemy.isAlive = false;
             }
@@ -372,7 +398,7 @@ public class GameScreen implements Screen {
 
 
         moveCamera();
-        if(Gdx.input.isTouched()) {
+        if (Gdx.input.isTouched()) {
 //            System.out.println(
 //                    (touch.x) + ", " +
 //                    (touch.y)
@@ -432,8 +458,8 @@ public class GameScreen implements Screen {
     }
 
     private void deleteBodies() {
-        for(Body body : bodyForDelete){
-            if(!world.isLocked()) {
+        for (Body body : bodyForDelete) {
+            if (!world.isLocked()) {
                 world.destroyBody(body);
 
                 int mapHeightInTiles = map.getProperties().get("height", Integer.class);
@@ -441,15 +467,15 @@ public class GameScreen implements Screen {
                 int mapHeightInPixels = mapHeightInTiles * tilePixelHeight;
 
                 Rectangle rect = coinsRect.get(body);
-                int tileX = (int) (rect.x)/tilePixelHeight;
+                int tileX = (int) (rect.x) / tilePixelHeight;
 //                int tileY = (int) (Math.abs(tilePixelHeight - rect.y));
-                int tileY = (int) (rect.y)/tilePixelHeight;
+                int tileY = (int) (rect.y) / tilePixelHeight;
 
                 TiledMapTileLayer.Cell cell = coinLayer.getCell(tileX, tileY);
 
                 if (cell != null) {
                     coinLayer.setCell(tileX, tileY, null);
-                }else{
+                } else {
                     System.out.println(tileX + " and " + tileY);
                     System.out.println("Не та ячейка!");
                 }
@@ -459,7 +485,7 @@ public class GameScreen implements Screen {
     }
 
     private void moveCamera() {
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT))
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT))
             camera.position.add(1, 0, 0);
     }
 
@@ -490,10 +516,19 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
+        bruh.dispose();
+        huh.dispose();
 
+        j.dispose();
+        s.dispose();
+        c.dispose();
+
+        deleteLater.dispose();
+        map.dispose();
+        renderer.dispose();
     }
 
-    private void updateTouch(){
+    private void updateTouch() {
         touch.set(
                 Gdx.input.getX() - gameViewport.getScreenX(),
                 gameViewport.getScreenHeight() - Gdx.input.getY() + gameViewport.getScreenY()

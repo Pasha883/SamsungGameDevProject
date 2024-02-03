@@ -23,11 +23,14 @@ public class Enemy {
     private Texture texture, texture2;
     private TextureRegion textureRegion;
 
+    private GameScreen gameScreen;
+
     public boolean isAlive = true;
 
 
-    public Enemy(World world, float x, float y) {
+    public Enemy(GameScreen gameScreen,World world, float x, float y) {
         this.world = world;
+        this.gameScreen=gameScreen;
 
         bruh = Gdx.audio.newSound(Gdx.files.internal("TMS/bruh.mp3"));
         huh = Gdx.audio.newSound(Gdx.files.internal("TMS/huh.mp3"));
@@ -40,6 +43,7 @@ public class Enemy {
 
 
         PolygonShape shape = new PolygonShape();
+
         shape.setAsBox(5f, 5f);
 
 
@@ -54,8 +58,8 @@ public class Enemy {
         shape.dispose();
 
 
-        texture = new Texture(Gdx.files.internal("badlogic.jpg"));
-        texture2 = new Texture(Gdx.files.internal("badlogicDEAD.jpg"));
+        texture = new Texture(Gdx.files.internal("pin.png"));
+        texture2 = new Texture(Gdx.files.internal("pinkill.png"));
         textureRegion = new TextureRegion(texture);
 
     }
@@ -65,28 +69,41 @@ public class Enemy {
             batch.draw(textureRegion,
                     body.getPosition().x - 5,
                     body.getPosition().y - 5,
-                    5, 5, 10, 10, 1, 1, body.getAngle()* MathUtils.radiansToDegrees);
+                    5, 5, 7, 7, 1, 1,
+                    body.getAngle() * MathUtils.radiansToDegrees);
             System.out.println(body.getAngle());
         }
         else
-            batch.draw(texture2, body.getPosition().x - 5, body.getPosition().y - 5, 10, 10);
+            batch.draw(texture2, body.getPosition().x - 5, body.getPosition().y - 5, 7, 7);
     }
 
     public void update(float deltaTime, Player player) {
         float x = player.body.getPosition().x;
+        float y = player.body.getPosition().y;
         Random rnd = new Random();
-        if (isAlive == true) {
-            if (body.getPosition().x > x){
-                body.applyLinearImpulse(new Vector2(-7, 0), body.getPosition(), true);
-            } else if (body.getPosition().x < x){
-                body.applyLinearImpulse(new Vector2(7, 0), body.getPosition(), true);
+
+        System.out.println(body.getPosition());
+        System.out.println(isAlive);
+        if (isAlive) {
+            if (!gameScreen.getCanMove()){
+                body.applyLinearImpulse(new Vector2(20, 30), body.getPosition(), true);
+            } else {
+//                System.out.println(y - body.getPosition().y);
+                if (body.getPosition().y - y > 50) {
+                    body.applyLinearImpulse(new Vector2(0, -100), body.getPosition(), true);
+                }
+                if (body.getPosition().x > x) {
+                    body.applyLinearImpulse(new Vector2(-10, 15), body.getPosition(), true);
+                } else if (body.getPosition().x < x) {
+                    body.applyLinearImpulse(new Vector2(10, 15), body.getPosition(), true);
+                }
             }
         }
 
     }
 
     public void handleCollision(Player player) {
-        if (isAlive == true && player.isInvease() == false){
+        if (isAlive == true && player.isInvease() == false) {
             q.play();
         }
 
@@ -97,7 +114,7 @@ public class Enemy {
         body.setUserData(enemy);
     }
 
-    public Body getBody(){
+    public Body getBody() {
         return body;
     }
 

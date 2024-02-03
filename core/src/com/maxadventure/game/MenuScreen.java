@@ -317,6 +317,32 @@ public class MenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        click.dispose();
+        huh.dispose();
+        boom.dispose();
+
+        play01ENG.dispose();
+        play02ENG.dispose();
+        play01RUS.dispose();
+        play02RUS.dispose();
+
+        settings01ENG.dispose();
+        settings02ENG.dispose();
+        settings01RUS.dispose();
+        settings02RUS.dispose();
+
+        about01ENG.dispose();
+        about02ENG.dispose();
+        about01RUS.dispose();
+        about02RUS.dispose();
+
+        secBUT.dispose();
+
+        menuTitleRUS.dispose();
+        menuTitleRUSShad.dispose();
+
+        menuTitleENG.dispose();
+        menuTitleENGShad.dispose();
 
     }
 
