@@ -135,7 +135,7 @@ public class GameScreen implements Screen {
                     }
                 if (contact.getFixtureB().getBody() == player.body && contact.getFixtureA().getBody() == enemy.getBody()) {
                     enemy.handleCollision(player);
-                    if (player.isInvease() == false)
+                    if (!player.isInvease())
                         player.startInvease();
 
                 } else if (contact.getFixtureA().getBody() == player.body && contact.getFixtureB().getBody() == enemy.getBody()) {
@@ -227,7 +227,7 @@ public class GameScreen implements Screen {
         button2.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (player.getAttack() == false) {
+                if (!player.getAttack()) {
                     Body body = enemy.getBody();
                     player.setAttack(true);
                     s.play();
@@ -253,7 +253,9 @@ public class GameScreen implements Screen {
         hudStage.addActor(button);
         hudStage.addActor(button2);
         //initBackground();
-        enemy = new Enemy(this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
+        enemy = new Enemy(batch,this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
+//        enemy = new Enemy(this, world, player.body.getPosition().x - 100, player.body.getPosition().y + 60);
+//        enemy = new Enemy(this, world, player.body.getPosition().x + 60, player.body.getPosition().y - 20);
 
         MyGdxGame.inputMultiplexer.addProcessor(hudStage);
     }
@@ -284,7 +286,7 @@ public class GameScreen implements Screen {
 
     private void startConfig() {
         Vector2 startPos = new Vector2(640, 400);
-        player = new Player(world, batch, 50, 50);
+        player = new Player(this,world, batch, 50, 50);
         player.body.setTransform(startPos, player.body.getAngle());
         camera.position.set(player.body.getPosition().x, player.body.getPosition().y, 0);
         System.out.println("Player: " + player.body);
@@ -381,7 +383,7 @@ public class GameScreen implements Screen {
 
 
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.L) && player.getAttack() == false) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L) && !player.getAttack()) {
             Body body = enemy.getBody();
             player.setAttack(true);
             player.setStartAttack(TimeUtils.millis());
@@ -432,7 +434,7 @@ public class GameScreen implements Screen {
         renderer.render();
 
         batch.begin();
-        enemy.render(batch);
+        enemy.render(delta);
         player.render(delta);
         batch.end();
 
