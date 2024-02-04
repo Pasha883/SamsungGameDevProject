@@ -37,7 +37,6 @@ public class Player extends Sprite {
     private boolean isInvease = false;
     private long startEnvease;
     private int jumpCounter = 0;
-    private GameScreen gameScreen;
 
 
 
@@ -51,12 +50,11 @@ public class Player extends Sprite {
 
     private int direct = 1;
     String curAnim = "idle", lastAnim = "idle";
-    public Player(GameScreen gameScreen,World world, SpriteBatch batch, float width, float height){
+    public Player(World world, SpriteBatch batch, float width, float height){
         this.world = world;
         this.batch = batch;
         this.width = width;
         this.height = height;
-        this.gameScreen=gameScreen;
         definePlayer();
 //        deleteLater = new Texture("badlogic.jpg");
         addAnimation("idle", "TMS/bg/players/FantasyWarrior/Sprites/Idle.png",
@@ -74,10 +72,6 @@ public class Player extends Sprite {
         addAnimation("attack", "TMS/bg/players/FantasyWarrior/Sprites/Attack1Right.png",
                 162, 162, .1f, 1, 7, 0,
                 Animation.PlayMode.NORMAL);
-
-        addAnimation("ydar", "TMS/bg/players/FantasyWarrior/Sprites/IdleHit.png",
-                162, 162, .1f, 1, 7, 0,
-                Animation.PlayMode.LOOP);
     }
 
     private void playAnimation(String name, Vector2 unitScale){
@@ -162,64 +156,57 @@ public class Player extends Sprite {
 
     private void selectorAnimations(float delta){
         Vector2 linearVelocity = body.getLinearVelocity();
-        if (!gameScreen.getCanMove()) {
-            curAnim = "ydar";
+        if(linearVelocity.x > 0 && linearVelocity.y == 0 && attackPlay == false) {
+            curAnim = "run";
             direction.set(1, 1);
             playAnimation(curAnim, direction);
-        } else {
-            if(linearVelocity.x > 0 && linearVelocity.y == 0 && attackPlay == false) {
-                curAnim = "run";
-                direction.set(1, 1);
-                playAnimation(curAnim, direction);
-            }
-            else if(linearVelocity.x < 0 && linearVelocity.y == 0 && attackPlay == false) {
-                curAnim = "run";
-                direction.set(-1, 1);
-                playAnimation(curAnim, direction);
-            }
-            if (linearVelocity.x == 0 && linearVelocity.y == 0 && direct == 1 && attackPlay == false){
-                curAnim = "idle";
-                direction.set(1, 1);
-                playAnimation(curAnim, direction);
-            }
-            else if (linearVelocity.x == 0 && linearVelocity.y == 0 && direct == -1 && attackPlay == false){
-                curAnim = "idle";
-                direction.set(-1, 1);
-                playAnimation(curAnim, direction);
-            }
-            if (linearVelocity.y < 0 && direct == 1 && attackPlay == false){
-                curAnim = "fall";
-                direction.set(1, 1);
-                playAnimation(curAnim, direction);
-            }
-            else if (linearVelocity.y < 0 && direct == -1 && attackPlay == false){
-                curAnim = "fall";
-                direction.set(-1, 1);
-                playAnimation(curAnim, direction);
-            }
-
-            if (linearVelocity.y > 0 && direct == 1 && attackPlay == false){
-                curAnim = "jump";
-                direction.set(1, 1);
-                playAnimation(curAnim, direction);
-            }
-            else if (linearVelocity.y > 0 && direct == -1 && attackPlay == false){
-                curAnim = "jump";
-                direction.set(-1, 1);
-                playAnimation(curAnim, direction);
-            }
-            if (attackPlay && direct == 1){
-                curAnim = "attack";
-                direction.set(1, 1);
-                playAnimation(curAnim, direction);
-            }
-            else if (attackPlay && direct == -1){
-                curAnim = "attack";
-                direction.set(-1, 1);
-                playAnimation(curAnim, direction);
-            }
+        }
+        else if(linearVelocity.x < 0 && linearVelocity.y == 0 && attackPlay == false) {
+            curAnim = "run";
+            direction.set(-1, 1);
+            playAnimation(curAnim, direction);
+        }
+        if (linearVelocity.x == 0 && linearVelocity.y == 0 && direct == 1 && attackPlay == false){
+            curAnim = "idle";
+            direction.set(1, 1);
+            playAnimation(curAnim, direction);
+        }
+        else if (linearVelocity.x == 0 && linearVelocity.y == 0 && direct == -1 && attackPlay == false){
+            curAnim = "idle";
+            direction.set(-1, 1);
+            playAnimation(curAnim, direction);
+        }
+        if (linearVelocity.y < 0 && direct == 1 && attackPlay == false){
+            curAnim = "fall";
+            direction.set(1, 1);
+            playAnimation(curAnim, direction);
+        }
+        else if (linearVelocity.y < 0 && direct == -1 && attackPlay == false){
+            curAnim = "fall";
+            direction.set(-1, 1);
+            playAnimation(curAnim, direction);
         }
 
+        if (linearVelocity.y > 0 && direct == 1 && attackPlay == false){
+            curAnim = "jump";
+            direction.set(1, 1);
+            playAnimation(curAnim, direction);
+        }
+        else if (linearVelocity.y > 0 && direct == -1 && attackPlay == false){
+            curAnim = "jump";
+            direction.set(-1, 1);
+            playAnimation(curAnim, direction);
+        }
+        if (attackPlay && direct == 1){
+            curAnim = "attack";
+            direction.set(1, 1);
+            playAnimation(curAnim, direction);
+        }
+        else if (attackPlay && direct == -1){
+            curAnim = "attack";
+            direction.set(-1, 1);
+            playAnimation(curAnim, direction);
+        }
 
         if(!lastAnim.equals(curAnim))
             resetAnimationTimer();
