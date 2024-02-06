@@ -302,11 +302,11 @@ public class GameScreen implements Screen {
                 buttonPressedRight = false;
             }
         });
-        button.setWidth(14);
-        button.setHeight(14);
+        button.setWidth(10);
+        button.setHeight(10);
 
-        button2.setWidth(14);
-        button2.setHeight(14);
+        button2.setWidth(10);
+        button2.setHeight(10);
 
         button3.setWidth(10);
         button3.setHeight(10);
