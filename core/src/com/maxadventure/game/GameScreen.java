@@ -96,6 +96,9 @@ public class GameScreen implements Screen {
 
     private boolean buttonPressedLeft = false, buttonPressedRight = false;
 
+    private Texture shkala, greenRect;
+    private int coinTakes = 0;
+
 
     public GameScreen(SpriteBatch batch, OrthographicCamera camera, OrthographicCamera hudCamera, MyGdxGame myGdxGame) {
         this.batch = batch;
@@ -116,17 +119,20 @@ public class GameScreen implements Screen {
         hudViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH / (2f * 10), MyGdxGame.SCREEN_HEIGHT / (2f * 10), hudCamera);
         hudStage = new Stage(hudViewport, batch);
 
-        Drawable active_button1 = new TextureRegionDrawable(new Texture("blue-A-pushed.png"));
-        Drawable none_active_button1 = new TextureRegionDrawable(new Texture("blue-A.png"));
+        Drawable active_button1 = new TextureRegionDrawable(new Texture("buttons/up.png"));
+        Drawable none_active_button1 = new TextureRegionDrawable(new Texture("buttons/upS.png"));
 
-        Drawable active_button2 = new TextureRegionDrawable(new Texture("blue-B-pushed.png"));
-        Drawable none_active_button2 = new TextureRegionDrawable(new Texture("blue-B.png"));
+        Drawable active_button2 = new TextureRegionDrawable(new Texture("buttons/attakD.png"));
+        Drawable none_active_button2 = new TextureRegionDrawable(new Texture("buttons/attackS.png"));
 
         Drawable active_button3 = new TextureRegionDrawable(new Texture("buttons/leftDinamic.png"));
-        Drawable none_active_button3 = new TextureRegionDrawable(new Texture("buttons/leftStatic.png"));
+        Drawable none_active_button3 = new TextureRegionDrawable(new Texture("buttons/left.png"));
 
         Drawable active_button4 = new TextureRegionDrawable(new Texture("buttons/rightDinamic.png"));
-        Drawable none_active_button4 = new TextureRegionDrawable(new Texture("buttons/rightStatic.png"));
+        Drawable none_active_button4 = new TextureRegionDrawable(new Texture("buttons/right.png"));
+
+        shkala = new Texture("progressbar.png");
+        greenRect = new Texture("greenRect.png");
 
 
         deleteLater = new Texture("badlogic.jpg");
@@ -149,6 +155,7 @@ public class GameScreen implements Screen {
                         coins.remove(contact.getFixtureA().getBody());
                         bodyForDelete.add(contact.getFixtureA().getBody());
                         c.play();
+                        coinTakes++;
                     }
                 if (contact.getFixtureB().getBody() == player.body && contact.getFixtureA().getBody() == enemy.getBody()) {
                     enemy.handleCollision(player);
@@ -416,8 +423,7 @@ public class GameScreen implements Screen {
             if (buttonPressedLeft) {
                 player.body.applyForceToCenter(new Vector2(-3000, 0), true);
                 player.setDirect(-1);
-            }
-            else if (buttonPressedRight){
+            } else if (buttonPressedRight) {
                 player.body.applyForceToCenter(new Vector2(3000, 0), true);
                 player.setDirect(1);
             }
@@ -505,6 +511,11 @@ public class GameScreen implements Screen {
         batch.begin();
         enemy.render(delta);
         player.render(delta);
+        batch.end();
+
+        batch.begin();
+        batch.draw(greenRect, camera.position.x - 20, camera.position.y + 20, coinTakes / 69f * 40, 3);
+        batch.draw(shkala, camera.position.x - 20, camera.position.y + 20, 40, 3);
         batch.end();
 
         //Отвечает за отрисовку границ rectangle
