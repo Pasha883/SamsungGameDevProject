@@ -28,6 +28,15 @@ public class Button {
         );
     }
 
+    public void draw(float x,float y){
+        batch.draw(texture,
+                x,
+                y,
+                width,
+                height
+        );
+    }
+
     public boolean isHit(){
         if(Gdx.input.justTouched()){
             Vector2 touchPosition = new Vector2(

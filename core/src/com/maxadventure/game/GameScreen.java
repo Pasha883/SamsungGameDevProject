@@ -29,6 +29,8 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -37,6 +39,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+
+//import com.maxadventure.game.Button;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -88,6 +92,10 @@ public class GameScreen implements Screen {
     private float time = 0;
     private MyGdxGame myGdxGame;
 
+    private com.maxadventure.game.Button leftStaticB, leftDinamicB;
+
+    private boolean buttonPressedLeft = false, buttonPressedRight = false;
+
 
     public GameScreen(SpriteBatch batch, OrthographicCamera camera, OrthographicCamera hudCamera, MyGdxGame myGdxGame) {
         this.batch = batch;
@@ -102,6 +110,8 @@ public class GameScreen implements Screen {
         s = Gdx.audio.newSound(Gdx.files.internal("S.mp3"));
         c = Gdx.audio.newSound(Gdx.files.internal("Coin.mp3"));
 
+//        leftDinamicB = new com.maxadventure.game.Button(leftStatic, batch, 10, 10, new Vector2(7, 3));
+
         gameViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH / (2f * 10), MyGdxGame.SCREEN_HEIGHT / (2f * 10), camera);
         hudViewport = new FitViewport(MyGdxGame.SCREEN_WIDTH / (2f * 10), MyGdxGame.SCREEN_HEIGHT / (2f * 10), hudCamera);
         hudStage = new Stage(hudViewport, batch);
@@ -111,6 +121,13 @@ public class GameScreen implements Screen {
 
         Drawable active_button2 = new TextureRegionDrawable(new Texture("blue-B-pushed.png"));
         Drawable none_active_button2 = new TextureRegionDrawable(new Texture("blue-B.png"));
+
+        Drawable active_button3 = new TextureRegionDrawable(new Texture("buttons/leftDinamic.png"));
+        Drawable none_active_button3 = new TextureRegionDrawable(new Texture("buttons/leftStatic.png"));
+
+        Drawable active_button4 = new TextureRegionDrawable(new Texture("buttons/rightDinamic.png"));
+        Drawable none_active_button4 = new TextureRegionDrawable(new Texture("buttons/rightStatic.png"));
+
 
         deleteLater = new Texture("badlogic.jpg");
         tmxMapLoader = new TmxMapLoader();
@@ -202,14 +219,21 @@ public class GameScreen implements Screen {
                 gameViewport.getScreenHeight() - Gdx.input.getY() + gameViewport.getScreenY()
         );
 
-        joystick = new Joystick(hudViewport, hudCamera, new Texture("bgJoystick.png"),
-                new Texture("fgStick.png"), 20, 6);
-        hudStage.addActor(joystick);
+//        joystick = new Joystick(hudViewport, hudCamera, new Texture("bgJoystick.png"),
+//                new Texture("fgStick.png"), 20, 6);A
+//        hudStage.addActor(joystick);
         Button button = new Button(none_active_button1, active_button1);
         button.setPosition(75, 5);
 
         Button button2 = new Button(none_active_button2, active_button2);
         button2.setPosition(90, 20);
+
+        Button button3 = new Button(active_button3, none_active_button3);
+        button3.setPosition(7, 5);
+
+        Button button4 = new Button(active_button4, none_active_button4);
+        button4.setPosition(25, 5);
+
         button.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -244,16 +268,52 @@ public class GameScreen implements Screen {
                 }
             }
         });
+
+
+        button3.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedLeft = true;
+                return true; // Возвращаем true, чтобы продолжить получать события touchUp
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedLeft = false;
+            }
+        });
+
+        button4.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedRight = true;
+                return true; // Возвращаем true, чтобы продолжить получать события touchUp
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedRight = false;
+            }
+        });
         button.setWidth(14);
         button.setHeight(14);
 
         button2.setWidth(14);
         button2.setHeight(14);
 
+        button3.setWidth(10);
+        button3.setHeight(10);
+
+        button4.setWidth(10);
+        button4.setHeight(10);
+
         hudStage.addActor(button);
         hudStage.addActor(button2);
-        //initBackground();
-        enemy = new Enemy(batch,this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
+        hudStage.addActor(button3);
+        hudStage.addActor(button4);
+
+        initBackground();
+        enemy = new Enemy(batch, this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
 //        enemy = new Enemy(this, world, player.body.getPosition().x - 100, player.body.getPosition().y + 60);
 //        enemy = new Enemy(this, world, player.body.getPosition().x + 60, player.body.getPosition().y - 20);
 
@@ -286,7 +346,7 @@ public class GameScreen implements Screen {
 
     private void startConfig() {
         Vector2 startPos = new Vector2(640, 400);
-        player = new Player(this,world, batch, 50, 50);
+        player = new Player(this, world, batch, 50, 50);
         player.body.setTransform(startPos, player.body.getAngle());
         camera.position.set(player.body.getPosition().x, player.body.getPosition().y, 0);
         System.out.println("Player: " + player.body);
@@ -350,18 +410,27 @@ public class GameScreen implements Screen {
         time += delta;
         updateTouch();
 
-        System.out.println(((TimeUtils.millis() - startTime) / 1000f) + "секунд с удара прошло");
-        if ((TimeUtils.millis() - startTime) / 1000f > 3) {
-//            startTime = TimeUtils.millis();
 
-            if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f) {
-                player.body.applyForceToCenter(new Vector2(3000, 0), true);
-                player.setDirect(1);
-            }
-            if (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f) {
+//        System.out.println(((TimeUtils.millis() - startTime) / 1000f) + "секунд с удара прошло");
+        if ((TimeUtils.millis() - startTime) / 1000f > 3) {
+            if (buttonPressedLeft) {
                 player.body.applyForceToCenter(new Vector2(-3000, 0), true);
                 player.setDirect(-1);
             }
+            else if (buttonPressedRight){
+                player.body.applyForceToCenter(new Vector2(3000, 0), true);
+                player.setDirect(1);
+            }
+//            startTime = TimeUtils.millis();
+
+//            if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f) {
+//                player.body.applyForceToCenter(new Vector2(3000, 0), true);
+//                player.setDirect(1);
+//            }
+//            if (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f) {
+//                player.body.applyForceToCenter(new Vector2(-3000, 0), true);
+//                player.setDirect(-1);
+//            }
 
             if (Gdx.input.isKeyJustPressed(Input.Keys.W)) {
                 int jumpCounter = player.getJumpCounter();
