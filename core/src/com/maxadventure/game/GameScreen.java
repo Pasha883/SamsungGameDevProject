@@ -226,9 +226,9 @@ public class GameScreen implements Screen {
                 gameViewport.getScreenHeight() - Gdx.input.getY() + gameViewport.getScreenY()
         );
 
-//        joystick = new Joystick(hudViewport, hudCamera, new Texture("bgJoystick.png"),
-//                new Texture("fgStick.png"), 20, 6);A
-//        hudStage.addActor(joystick);
+        joystick = new Joystick(hudViewport, hudCamera, new Texture("bgJoystick.png"),
+                new Texture("fgStick.png"), 20, 6);
+
         Button button = new Button(none_active_button1, active_button1);
         button.setPosition(75, 5);
 
@@ -314,10 +314,13 @@ public class GameScreen implements Screen {
         button4.setWidth(10);
         button4.setHeight(10);
 
+        System.out.println("управление джойстиком "+MyGdxGame.isJoysticMode);
+
+
+
         hudStage.addActor(button);
         hudStage.addActor(button2);
-        hudStage.addActor(button3);
-        hudStage.addActor(button4);
+
 
         initBackground();
         enemy = new Enemy(batch, this, world, player.body.getPosition().x - 40, player.body.getPosition().y);
@@ -406,6 +409,57 @@ public class GameScreen implements Screen {
         musicG.play();
         startMills = TimeUtils.millis();
         initBackground();
+
+        Drawable active_button3 = new TextureRegionDrawable(new Texture("buttons/leftDinamic.png"));
+        Drawable none_active_button3 = new TextureRegionDrawable(new Texture("buttons/left.png"));
+
+        Drawable active_button4 = new TextureRegionDrawable(new Texture("buttons/rightDinamic.png"));
+        Drawable none_active_button4 = new TextureRegionDrawable(new Texture("buttons/right.png"));
+
+        Button button3 = new Button(active_button3, none_active_button3);
+        button3.setPosition(7, 5);
+
+        Button button4 = new Button(active_button4, none_active_button4);
+        button4.setPosition(25, 5);
+
+        button3.setWidth(10);
+        button3.setHeight(10);
+
+        button4.setWidth(10);
+        button4.setHeight(10);
+
+        button3.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedLeft = true;
+                return true; // Возвращаем true, чтобы продолжить получать события touchUp
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedLeft = false;
+            }
+        });
+
+        button4.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedRight = true;
+                return true; // Возвращаем true, чтобы продолжить получать события touchUp
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                buttonPressedRight = false;
+            }
+        });
+
+        if (!MyGdxGame.isJoysticMode){
+            hudStage.addActor(button3);
+            hudStage.addActor(button4);
+        } else if (MyGdxGame.isJoysticMode){
+            hudStage.addActor(joystick);
+        }
         //resize((int) MyGdxGame.WIDTH, (int) MyGdxGame.HEIGHT);
     }
 
@@ -420,10 +474,10 @@ public class GameScreen implements Screen {
 
 //        System.out.println(((TimeUtils.millis() - startTime) / 1000f) + "секунд с удара прошло");
         if ((TimeUtils.millis() - startTime) / 1000f > 3) {
-            if (buttonPressedLeft) {
+            if (buttonPressedLeft || (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f)) {
                 player.body.applyForceToCenter(new Vector2(-3000, 0), true);
                 player.setDirect(-1);
-            } else if (buttonPressedRight) {
+            } else if (buttonPressedRight || (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f)) {
                 player.body.applyForceToCenter(new Vector2(3000, 0), true);
                 player.setDirect(1);
             }

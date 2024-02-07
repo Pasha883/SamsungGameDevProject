@@ -21,6 +21,7 @@ public class MyGdxGame extends Game {
     public OrthographicCamera hudCamera = new OrthographicCamera();
 
     public static boolean isJoysticStatic = false;
+    public static boolean isJoysticMode = false;
 
     public IntroScreen introScreen;
     public GameScreen gameScreen;

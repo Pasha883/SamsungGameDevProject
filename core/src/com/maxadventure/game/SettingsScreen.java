@@ -48,6 +48,12 @@ public class SettingsScreen implements Screen {
     private Texture JMTENG, LTENG, NSTENG, STENG, SeTENG;
     private Texture JMTRUS, LTRUS, NSTRUS, STRUS, SeTRUS;
     private Texture allEngDin, allEngStat, allRusStat, allRusDin;
+
+    private Texture joyRus, joyEng, buttonsEng, buttonsRus;
+
+    private Button joyRusB, joyEngB, buttonsEngB, buttonsRusB;
+
+    private Texture allRus, allEng;
     private Sound click;
     private Sprite BLMM;
 
@@ -58,6 +64,9 @@ public class SettingsScreen implements Screen {
         allEngStat = new Texture("SettingsScreenAssets/Assets/ENG/allEngStat.png");
         allRusStat = new Texture("SettingsScreenAssets/Assets/RUS/allRusStat.png");
         allRusDin = new Texture("SettingsScreenAssets/Assets/RUS/allRusDin.png");
+
+        allEng = new Texture("SettingsScreenAssets/Assets/ENG/all.png");
+        allRus = new Texture("SettingsScreenAssets/Assets/RUS/all.png");
 
         ENG01 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng01.png");
         ENG02 = new Texture("SettingsScreenAssets/Buttons/Language/ENG/Eng02.png");
@@ -78,6 +87,11 @@ public class SettingsScreen implements Screen {
         back02ENG = new Texture("SettingsScreenAssets/Buttons/Back/ENG/back03.png");
         back01RUS = new Texture("SettingsScreenAssets/Buttons/Back/RUS/back01.png");
         back02RUS = new Texture("SettingsScreenAssets/Buttons/Back/RUS/back03.png");
+
+        joyEng = new Texture("SettingsScreenAssets/Buttons/joy.png");
+        joyRus = new Texture("SettingsScreenAssets/Buttons/joyRus.png");
+        buttonsEng = new Texture("SettingsScreenAssets/Buttons/buttonsMode.png");
+        buttonsRus = new Texture("SettingsScreenAssets/Buttons/buttonsRus.png");
 
         JMTENG = new Texture("SettingsScreenAssets/Assets/ENG/JoyModeText.png");
         LTENG = new Texture("SettingsScreenAssets/Assets/ENG/LangText.png");
@@ -110,7 +124,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 200 / 2984f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f + 150 / 2984f * Gdx.graphics.getHeight()
                 )
         );
         RUS = new Button(RUS01,
@@ -119,7 +133,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 200 / 2984f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f + 150 / 2984f * Gdx.graphics.getHeight()
                 )
         );
 
@@ -129,7 +143,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 330 / 1440f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f - 470 / 1440f * Gdx.graphics.getHeight()
                 )
         );
         staticRUS = new Button(stat01RUS,
@@ -138,7 +152,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 330 / 1440f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f - 470 / 1440f * Gdx.graphics.getHeight()
                 )
         );
 
@@ -147,7 +161,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 330 / 1440f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f - 470 / 1440f * Gdx.graphics.getHeight()
                 )
         );
         dynamRUS = new Button(dynam01RUS, batch,
@@ -155,7 +169,7 @@ public class SettingsScreen implements Screen {
                 (int) (160 / 1440f * Gdx.graphics.getHeight()),
                 new Vector2(
                         Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 330 / 1440f * Gdx.graphics.getHeight()
+                        Gdx.graphics.getHeight() / 2f - 470 / 1440f * Gdx.graphics.getHeight()
                 )
         );
 
@@ -173,6 +187,42 @@ public class SettingsScreen implements Screen {
                 new Vector2(
                         Gdx.graphics.getWidth() - 500 / 2984f * Gdx.graphics.getWidth(),
                         Gdx.graphics.getHeight() / 2f - 500 / 1440f * Gdx.graphics.getHeight()
+                )
+        );
+
+        joyEngB = new Button(joyEng, batch,
+                (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                (int) (160 / 1440f * Gdx.graphics.getHeight()),
+                new Vector2(
+                        Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 200 / 1440f * Gdx.graphics.getHeight()
+                )
+        );
+
+        joyRusB = new Button(joyRus, batch,
+                (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                (int) (160 / 1440f * Gdx.graphics.getHeight()),
+                new Vector2(
+                        Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 200 / 1440f * Gdx.graphics.getHeight()
+                )
+        );
+
+        buttonsEngB = new Button(buttonsEng, batch,
+                (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                (int) (160 / 1440f * Gdx.graphics.getHeight()),
+                new Vector2(
+                        Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 200 / 1440f * Gdx.graphics.getHeight()
+                )
+        );
+
+        buttonsRusB = new Button(buttonsRus, batch,
+                (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                (int) (160 / 1440f * Gdx.graphics.getHeight()),
+                new Vector2(
+                        Gdx.graphics.getWidth() / 2f - 250 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 200 / 1440f * Gdx.graphics.getHeight()
                 )
         );
 
@@ -198,6 +248,7 @@ public class SettingsScreen implements Screen {
     @Override
     public void render(float delta) {
         boolean isStat = MyGdxGame.isJoysticStatic;
+        boolean isJoymode = MyGdxGame.isJoysticMode;
         lang = MyGdxGame.language;
         BLMM.setPosition((int) (camera.position.x) - MyGdxGame.WIDTH / 2,
                 (int) (camera.position.y) - MyGdxGame.HEIGHT / 2);
@@ -233,31 +284,42 @@ public class SettingsScreen implements Screen {
 //                    Gdx.graphics.getHeight() - 470 / 1280f * Gdx.graphics.getWidth(),
 //                    JMTENG.getWidth() * 2 / 1280f * Gdx.graphics.getWidth(),
 //                    JMTENG.getHeight() * 2 / 720f * Gdx.graphics.getHeight());
-            ENG.draw();
-            if (isStat == true) {
-                staticENG.draw();
-                batch.draw(allEngStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
-                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
-                                45 / 720f * Gdx.graphics.getHeight(),
-                        Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            if (isJoymode) {
+                joyEngB.draw();
+                if (isStat == true) {
+                    staticENG.draw();
+                    batch.draw(allEngStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                            camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                    45 / 720f * Gdx.graphics.getHeight(),
+                            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 //                batch.draw(STENG,
 //                        (int) (camera.position.x - STENG.getWidth() * 1),
 //                        Gdx.graphics.getHeight() - 960,
 //                        STENG.getWidth() * 2,
 //                        STENG.getHeight() * 2);
-            } else if (isStat == false) {
-                dynamENG.draw();
-                batch.draw(allEngDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
-                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
-                                45 / 720f * Gdx.graphics.getHeight(),
-                        Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+                } else if (isStat == false) {
+                    dynamENG.draw();
+                    batch.draw(allEngDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                            camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                    45 / 720f * Gdx.graphics.getHeight(),
+                            Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 //                batch.draw(NSTENG,
 //                        (int) (camera.position.x - NSTENG.getWidth() * 1),
 //                        Gdx.graphics.getHeight() - 880,
 //                        NSTENG.getWidth() * 2,
 //                        NSTENG.getHeight() * 2);
+                }
+            } else if (!isJoymode) {
+                buttonsEngB.draw();
+                batch.draw(allEng, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(),
+                        Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
             }
+
+            ENG.draw();
+
 
             backENG.draw();
         } else if (lang == 2) {
@@ -280,31 +342,51 @@ public class SettingsScreen implements Screen {
 //                    JMTRUS.getWidth() * 3,
 //                    JMTRUS.getHeight() * 3);
             RUS.draw();
-            if (isStat == true) {
-                staticRUS.draw();
-                batch.draw(allRusStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
-                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
-                                45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight());
+            if (isJoymode) {
+                joyRusB.draw();
+                if (isStat == true && isJoymode) {
+                    staticRUS.draw();
+                    batch.draw(allRusStat, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                            camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                    45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
+                            Gdx.graphics.getHeight());
 //                batch.draw(STRUS,
 //                        (int) (camera.position.x - STRUS.getWidth() * 1),
 //                        Gdx.graphics.getHeight() - 960,
 //                        STRUS.getWidth() * 2,
 //                        STRUS.getHeight() * 2);
-            } else if (isStat == false) {
-                dynamRUS.draw();
-                batch.draw(allRusDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
-                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
-                                45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight());
+                } else if (isStat == false && isJoymode) {
+                    dynamRUS.draw();
+                    batch.draw(allRusDin, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                            camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                    45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
+                            Gdx.graphics.getHeight());
 //                batch.draw(NSTRUS,
 //                        (int) (camera.position.x - NSTRUS.getWidth() * 1),
 //                        Gdx.graphics.getHeight() - 880,
 //                        NSTRUS.getWidth() * 2,
 //                        NSTRUS.getHeight() * 2);
+                }
+            } else if (!isJoymode) {
+                buttonsRusB.draw();
+                batch.draw(allRus, camera.position.x - (Gdx.graphics.getWidth()) / 2f,
+                        camera.position.y - (Gdx.graphics.getHeight() / 2f) -
+                                45 / 720f * Gdx.graphics.getHeight(), Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight());
             }
 
+
+
             backRUS.draw();
+        }
+
+        if (joyEngB.isHit() || joyRusB.isHit() || buttonsEngB.isHit() || buttonsRusB.isHit()) {
+            if (isJoymode) {
+                MyGdxGame.isJoysticMode = false;
+            } else if (!isJoymode) {
+                MyGdxGame.isJoysticMode = true;
+            }
+            click.play();
         }
 
         if (staticENG.isHit() || staticRUS.isHit() || dynamENG.isHit() || dynamRUS.isHit()) {
