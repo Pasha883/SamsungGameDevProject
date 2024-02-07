@@ -212,19 +212,19 @@ public class MenuScreen implements Screen {
             }
             if (settingsENG.isHit()) {
                 batch.draw(settings02ENG,
-                        camera.position.x - 300/2984f*Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 615/1440f*Gdx.graphics.getHeight(),
-                        600/2984f*Gdx.graphics.getWidth(),
-                        200/1440f*Gdx.graphics.getHeight());
+                        camera.position.x - 300 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 615 / 1440f * Gdx.graphics.getHeight(),
+                        600 / 2984f * Gdx.graphics.getWidth(),
+                        200 / 1440f * Gdx.graphics.getHeight());
                 click.play();
                 myGdxGame.setScreen(myGdxGame.settingsScreen);
             }
             if (aboutENG.isHit()) {
                 batch.draw(about02ENG,
-                        camera.position.x - 300/2984f*Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 820/1440f*Gdx.graphics.getHeight(),
-                        600/2984f*Gdx.graphics.getWidth(),
-                        200/1440f*Gdx.graphics.getHeight());
+                        camera.position.x - 300 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 820 / 1440f * Gdx.graphics.getHeight(),
+                        600 / 2984f * Gdx.graphics.getWidth(),
+                        200 / 1440f * Gdx.graphics.getHeight());
 
                 Gdx.net.openURI("https://github.com/Pasha883/SamsungGameDevProject");
                 click.play();
@@ -249,10 +249,10 @@ public class MenuScreen implements Screen {
 
             if (playRUS.isHit()) {
                 batch.draw(play02RUS,
-                        camera.position.x - 300/2984f*Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 420/1440f*Gdx.graphics.getHeight(),
-                        600/2984f*Gdx.graphics.getWidth(),
-                        200/1440f*Gdx.graphics.getHeight());
+                        camera.position.x - 300 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 420 / 1440f * Gdx.graphics.getHeight(),
+                        600 / 2984f * Gdx.graphics.getWidth(),
+                        200 / 1440f * Gdx.graphics.getHeight());
                 click.play();
                 MyGdxGame.WIDTH = 2316 / (2f * 10);
                 MyGdxGame.HEIGHT = 1080 / (2f * 10);
@@ -261,19 +261,19 @@ public class MenuScreen implements Screen {
             }
             if (settingsRUS.isHit()) {
                 batch.draw(settings02RUS,
-                        camera.position.x - 300/2984f*Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 615/1440f*Gdx.graphics.getHeight(),
-                        600/2984f*Gdx.graphics.getWidth(),
-                        200/1440f*Gdx.graphics.getHeight());
+                        camera.position.x - 300 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 615 / 1440f * Gdx.graphics.getHeight(),
+                        600 / 2984f * Gdx.graphics.getWidth(),
+                        200 / 1440f * Gdx.graphics.getHeight());
                 click.play();
                 myGdxGame.setScreen(myGdxGame.settingsScreen);
             }
             if (aboutRUS.isHit()) {
                 batch.draw(about02RUS,
-                        camera.position.x - 300/2984f*Gdx.graphics.getWidth(),
-                        Gdx.graphics.getHeight() / 2f - 820/1440f*Gdx.graphics.getHeight(),
-                        600/2984f*Gdx.graphics.getWidth(),
-                        200/1440f*Gdx.graphics.getHeight());
+                        camera.position.x - 300 / 2984f * Gdx.graphics.getWidth(),
+                        Gdx.graphics.getHeight() / 2f - 820 / 1440f * Gdx.graphics.getHeight(),
+                        600 / 2984f * Gdx.graphics.getWidth(),
+                        200 / 1440f * Gdx.graphics.getHeight());
                 click.play();
                 Gdx.net.openURI("https://github.com/Pasha883/SamsungGameDevProject");
 

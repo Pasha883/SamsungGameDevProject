@@ -26,6 +26,7 @@ public class Button {
                 width,
                 height
         );
+
     }
 
     public void draw(float x,float y){

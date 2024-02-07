@@ -376,7 +376,6 @@ public class SettingsScreen implements Screen {
             }
 
 
-
             backRUS.draw();
         }
 
@@ -389,45 +388,51 @@ public class SettingsScreen implements Screen {
             click.play();
         }
 
+
+
         if (staticENG.isHit() || staticRUS.isHit() || dynamENG.isHit() || dynamRUS.isHit()) {
             if (isStat == true) {
                 MyGdxGame.isJoysticStatic = false;
                 click.play();
                 if (lang == 1) {
                     batch.draw(stat02ENG,
-                            camera.position.x - 250,
-                            Gdx.graphics.getHeight() / 2 - 230,
-                            500,
-                            160);
+                            camera.position.x- 250 / 2984f * Gdx.graphics.getWidth(),
+                            camera.position.y - 470 / 1440f * Gdx.graphics.getHeight(),
+                            (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                            (int) (160 / 1440f * Gdx.graphics.getHeight())
+                    );
                 }
             } else if (isStat == false) {
                 MyGdxGame.isJoysticStatic = true;
                 click.play();
                 if (lang == 1) {
                     batch.draw(dynam02ENG,
-                            camera.position.x - 250,
-                            Gdx.graphics.getHeight() / 2 - 230,
-                            500,
-                            160);
+                            camera.position.x- 250 / 2984f * Gdx.graphics.getWidth(),
+                            camera.position.y - 470 / 1440f * Gdx.graphics.getHeight(),
+                            (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                            (int) (160 / 1440f * Gdx.graphics.getHeight())
+                    );
                 }
             }
         }
+
 
         if (backENG.isHit() || backRUS.isHit()) {
             myGdxGame.setScreen(myGdxGame.menuScreen);
             click.play();
             if (lang == 1) {
                 batch.draw(back02ENG,
-                        camera.position.x - 250,
-                        Gdx.graphics.getHeight() / 2 - 500,
-                        500,
-                        160);
+                        Gdx.graphics.getWidth() / 2f + camera.position.x - 500 / 2984f * Gdx.graphics.getWidth(),
+                        camera.position.y - 500 / 1440f * Gdx.graphics.getHeight(),
+                        (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (160 / 1440f * Gdx.graphics.getHeight())
+                );
             } else if (lang == 2) {
                 batch.draw(back02RUS,
-                        camera.position.x - 250,
-                        Gdx.graphics.getHeight() / 2 - 500,
-                        500,
-                        160);
+                        Gdx.graphics.getWidth() / 2f + camera.position.x - 500 / 2984f * Gdx.graphics.getWidth(),
+                        camera.position.y - 500 / 1440f * Gdx.graphics.getHeight(),
+                        (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (160 / 1440f * Gdx.graphics.getHeight()));
             }
         }
 
@@ -436,17 +441,17 @@ public class SettingsScreen implements Screen {
             if (lang == 1) {
                 MyGdxGame.language = 2;
                 batch.draw(ENG02,
-                        camera.position.x - 250,
-                        Gdx.graphics.getHeight() / 2 + 100,
-                        500,
-                        160);
+                        camera.position.x - 250 / 2984f * Gdx.graphics.getWidth(),
+                        camera.position.y + 140 / 2984f * Gdx.graphics.getHeight(),
+                        (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (160 / 1440f * Gdx.graphics.getHeight()));
             } else if (lang == 2) {
                 MyGdxGame.language = 1;
                 batch.draw(RUS02,
-                        camera.position.x - 250,
-                        Gdx.graphics.getHeight() / 2 + 100,
-                        500,
-                        160);
+                        camera.position.x - 250 / 2984f * Gdx.graphics.getWidth(),
+                        camera.position.y + 140 / 2984f * Gdx.graphics.getHeight(),
+                        (int) (500 / 2984f * Gdx.graphics.getWidth()),
+                        (int) (160 / 1440f * Gdx.graphics.getHeight()));
             }
         }
 
