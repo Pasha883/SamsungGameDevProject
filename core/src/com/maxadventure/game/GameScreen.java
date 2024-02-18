@@ -34,6 +34,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -98,6 +99,16 @@ public class GameScreen implements Screen {
 
     private Texture shkala, greenRect;
     private int coinTakes = 0;
+    private int clickCount = 0;
+    private long lastClickTime = 0;
+    private long doubleClickTimeThreshold = 50;
+
+    private float targetSpeed = 200f;
+
+    private long clickTimeDouble = 0;
+    private int clicks = 0;
+
+    private boolean speedTwo = false;
 
 
     public GameScreen(SpriteBatch batch, OrthographicCamera camera, OrthographicCamera hudCamera, MyGdxGame myGdxGame) {
@@ -230,10 +241,10 @@ public class GameScreen implements Screen {
                 new Texture("fgStick.png"), 20, 6);
 
         Button button = new Button(none_active_button1, active_button1);
-        button.setPosition(75, 5);
+        button.setPosition(90 / 2400f * Gdx.graphics.getWidth(), 5 / 1080f * Gdx.graphics.getHeight());
 
         Button button2 = new Button(none_active_button2, active_button2);
-        button2.setPosition(90, 20);
+        button2.setPosition(105 / 2400f * Gdx.graphics.getWidth(), 20 / 1080f * Gdx.graphics.getHeight());
 
         Button button3 = new Button(active_button3, none_active_button3);
         button3.setPosition(7, 5);
@@ -281,12 +292,15 @@ public class GameScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 buttonPressedLeft = true;
-                return true; // Возвращаем true, чтобы продолжить получать события touchUp
+                speedTwo = TimeUtils.millis() - clickTimeDouble >= 1000;
+                return true;
             }
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 buttonPressedLeft = false;
+                speedTwo = false;
+                clickTimeDouble = TimeUtils.millis();
             }
         });
 
@@ -302,11 +316,18 @@ public class GameScreen implements Screen {
                 buttonPressedRight = false;
             }
         });
-        button.setWidth(10);
-        button.setHeight(10);
 
-        button2.setWidth(10);
-        button2.setHeight(10);
+
+        button.setWidth(11 / 2400f * Gdx.graphics.getWidth());
+        button.setHeight(11 / 2400f * Gdx.graphics.getWidth());
+//        button.setWidth(10);
+//        button.setHeight(10);
+
+
+        button2.setWidth(11 / 2400f * Gdx.graphics.getWidth());
+        button2.setHeight(11 / 2400f * Gdx.graphics.getWidth());
+//        button2.setWidth(10);
+//        button2.setHeight(10);
 
         button3.setWidth(10);
         button3.setHeight(10);
@@ -314,8 +335,7 @@ public class GameScreen implements Screen {
         button4.setWidth(10);
         button4.setHeight(10);
 
-        System.out.println("управление джойстиком "+MyGdxGame.isJoysticMode);
-
+        System.out.println("управление джойстиком " + MyGdxGame.isJoysticMode);
 
 
         hudStage.addActor(button);
@@ -363,7 +383,8 @@ public class GameScreen implements Screen {
     }
 
     private void correctCamera() {
-        float cameraSpeed = 2f;
+        float cameraSpeed = 0.8f;
+        float cameraSpeedY = 1f;
         float xDirection = player.body.getPosition().x - camera.position.x;
         float yDirection = player.body.getPosition().y - camera.position.y;
         if (Math.abs(xDirection) > MyGdxGame.WIDTH / 2 * 0.4f) {
@@ -376,7 +397,7 @@ public class GameScreen implements Screen {
             if (yDirection > 0)
                 camera.position.add(0, cameraSpeed, 0);
             else
-                camera.position.add(0, -cameraSpeed, 0);
+                camera.position.add(0, -cameraSpeedY, 0);
         }
     }
 
@@ -417,16 +438,16 @@ public class GameScreen implements Screen {
         Drawable none_active_button4 = new TextureRegionDrawable(new Texture("buttons/right.png"));
 
         Button button3 = new Button(active_button3, none_active_button3);
-        button3.setPosition(7, 5);
+        button3.setPosition(7 / 2400f * Gdx.graphics.getWidth(), 5 / 1080f * Gdx.graphics.getHeight());
 
         Button button4 = new Button(active_button4, none_active_button4);
-        button4.setPosition(25, 5);
+        button4.setPosition(25 / 2400f * Gdx.graphics.getWidth(), 5 / 1080f * Gdx.graphics.getHeight());
 
-        button3.setWidth(10);
-        button3.setHeight(10);
+        button3.setWidth(10 / 2400f * Gdx.graphics.getWidth());
+        button3.setHeight(10 / 2400f * Gdx.graphics.getWidth());
 
-        button4.setWidth(10);
-        button4.setHeight(10);
+        button4.setWidth(10 / 2400f * Gdx.graphics.getWidth());
+        button4.setHeight(10 / 2400f * Gdx.graphics.getWidth());
 
         button3.addListener(new InputListener() {
             @Override
@@ -454,10 +475,10 @@ public class GameScreen implements Screen {
             }
         });
 
-        if (!MyGdxGame.isJoysticMode){
+        if (!MyGdxGame.isJoysticMode) {
             hudStage.addActor(button3);
             hudStage.addActor(button4);
-        } else if (MyGdxGame.isJoysticMode){
+        } else if (MyGdxGame.isJoysticMode) {
             hudStage.addActor(joystick);
         }
         //resize((int) MyGdxGame.WIDTH, (int) MyGdxGame.HEIGHT);
@@ -474,13 +495,31 @@ public class GameScreen implements Screen {
 
 //        System.out.println(((TimeUtils.millis() - startTime) / 1000f) + "секунд с удара прошло");
         if ((TimeUtils.millis() - startTime) / 1000f > 3) {
+            // Желаемая скорость игрока
+
+//            if (speedTwo){
+//                targetSpeed = 250f;
+//            }
+//            else targetSpeed = 100f;
+
+            System.out.println("двойной клик " + targetSpeed);
+
+// Поддерживаем постоянную скорость для движения влево
+            float maxSpeed = 130; // Максимальная скорость игрока
+
             if (buttonPressedLeft || (joystick.getResult().x < -0.75f && joystick.getResult().y < 0.5f)) {
-                player.body.applyForceToCenter(new Vector2(-3000, 0), true);
+                if (player.body.getLinearVelocity().x > -maxSpeed) {
+                    player.body.applyForceToCenter(new Vector2(-3000, 0), true);
+                }
                 player.setDirect(-1);
             } else if (buttonPressedRight || (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f)) {
-                player.body.applyForceToCenter(new Vector2(3000, 0), true);
+                if (player.body.getLinearVelocity().x < maxSpeed) {
+                    player.body.applyForceToCenter(new Vector2(3000, 0), true);
+                }
                 player.setDirect(1);
             }
+
+
 //            startTime = TimeUtils.millis();
 
 //            if (joystick.getResult().x > 0.75f && joystick.getResult().y < 0.5f) {
@@ -568,8 +607,12 @@ public class GameScreen implements Screen {
         batch.end();
 
         batch.begin();
-        batch.draw(greenRect, camera.position.x - 20, camera.position.y + 20, coinTakes / 69f * 40, 3);
-        batch.draw(shkala, camera.position.x - 20, camera.position.y + 20, 40, 3);
+        batch.draw(greenRect, camera.position.x - 19.73f, camera.position.y + 20 / 1080f * Gdx.graphics.getHeight(),
+                (coinTakes / 69f * 39.73f) / 2400f * Gdx.graphics.getWidth(),
+                3 / 1080f * Gdx.graphics.getHeight());
+        batch.draw(shkala, camera.position.x - 20,
+                camera.position.y + 20 / 1080f * Gdx.graphics.getHeight(),
+                40 / 2400f * Gdx.graphics.getWidth(), 3 / 1080f * Gdx.graphics.getHeight());
         batch.end();
 
         //Отвечает за отрисовку границ rectangle

@@ -28,6 +28,7 @@ public class MyGdxGame extends Game {
     public MenuScreen menuScreen;
     public SettingsScreen settingsScreen;
     public MemeMenuScreen memeMenuScreen;
+    public StartVideoScreen startVideoScreen;
 
     public static Vector2 leftBottomPointCamera = new Vector2();
 
@@ -55,6 +56,7 @@ public class MyGdxGame extends Game {
         hudCamera.setToOrtho(false, WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
         introScreen = new IntroScreen(this, batch, camera);
+        startVideoScreen = new StartVideoScreen(this, batch, camera);
         gameScreen = new GameScreen(batch, camera, hudCamera, this);
         settingsScreen = new SettingsScreen(this, batch, camera);
         memeMenuScreen = new MemeMenuScreen(this, batch, camera);

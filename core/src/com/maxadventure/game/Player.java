@@ -39,6 +39,8 @@ public class Player extends Sprite {
     private int jumpCounter = 0;
     private GameScreen gameScreen;
 
+    private float speed;
+
 
 
     public void setDirect(int direct) {

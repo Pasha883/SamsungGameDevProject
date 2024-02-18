@@ -177,9 +177,9 @@ public class Enemy {
                     System.out.println("бегу вниз"+body.getPosition().y);
                     body.applyLinearImpulse(new Vector2(0, -1000), body.getPosition(), true);
                 } else if (body.getPosition().x > x) {
-                    body.applyLinearImpulse(new Vector2(-4, 15), body.getPosition(), true);
+                    body.applyLinearImpulse(new Vector2(-2, 15), body.getPosition(), true);
                 } else if (body.getPosition().x < x) {
-                    body.applyLinearImpulse(new Vector2(4, 15), body.getPosition(), true);
+                    body.applyLinearImpulse(new Vector2(2, 15), body.getPosition(), true);
                 }
             }
         }
