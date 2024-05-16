@@ -280,7 +280,8 @@ public class MenuScreen implements Screen {
 
             }
         }
-        if (secBut.isHit()) {
+        //Can break all MenuScreen
+        /*if (secBut.isHit()) {
             if (counter < 5) {
                 huh.play();
                 counter += 1;
@@ -290,7 +291,7 @@ public class MenuScreen implements Screen {
                 isStarted = true;
                 startMillis = TimeUtils.millis();
             }
-        }
+        }*/
         batch.setProjectionMatrix(camera.combined);
         batch.end();
     }
